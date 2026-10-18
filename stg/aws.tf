@@ -1,15 +1,11 @@
-resource "aws_ecr_repository" "sample" {
+module "ecr_sample" {
+  source               = "../modules/aws/ecr_unit"
   name                 = "cp-test-ecr-stg"
   image_tag_mutability = "IMMUTABLE"
 }
 
-resource "aws_ecr_repository" "sample_2" {
+module "ecr_sample_2" {
+  source               = "../modules/aws/ecr_unit"
   name                 = "cp-test-ecr-2-stg"
   image_tag_mutability = "IMMUTABLE"
-}
-
-resource "aws_ecr_repository" "sample_3" {
-  count                = 1
-  name                 = "cp-test-ecr-3-stg"
-  image_tag_mutability = "MUTABLE"
 }
