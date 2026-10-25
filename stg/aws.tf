@@ -1,4 +1,6 @@
-import {
-  to = aws_vpc.vpc
-  id = "vpc-08aea5c1ca995e705"
+resource "aws_vpc" "vpc" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "cloud-pratica-stg"
+  }
 }
