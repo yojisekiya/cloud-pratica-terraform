@@ -26,5 +26,5 @@ module "aws_subnet" {
 
 # import {
 #   to = module.aws_subnet.aws_subnet.private_subnet_1c
-#   id = "subnet-085c5f1a60fe601b0"
+#   id = "subnet-064bf7a0032eba3f9"
 # }

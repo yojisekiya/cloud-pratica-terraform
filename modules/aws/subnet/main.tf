@@ -2,7 +2,7 @@ resource "aws_subnet" "public_subnet_1a" {
   cidr_block              = "10.0.0.0/18"
   map_public_ip_on_launch = true
   tags = {
-    Name = "public-subnet-1c-${var.env}"
+    Name = "public-subnet-1a-${var.env}"
   }
   vpc_id = var.vpc_id
 }
@@ -20,7 +20,7 @@ resource "aws_subnet" "private_subnet_1a" {
   assign_ipv6_address_on_creation = false
   cidr_block                      = "10.0.128.0/18"
   tags = {
-    Name = "private-subnet-1c-${var.env}"
+    Name = "private-subnet-1a-${var.env}"
   }
   vpc_id = var.vpc_id
 }
