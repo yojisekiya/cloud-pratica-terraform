@@ -1,4 +1,4 @@
-resource "aws_subnet" "private_subnet_1c" {
+resource "aws_subnet" "public_subnet_1c" {
   assign_ipv6_address_on_creation = false
   cidr_block                      = "10.0.64.0/18"
   tags = {
