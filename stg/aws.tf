@@ -10,6 +10,11 @@ module "aws_subnet" {
 }
 
 # import {
+#   to = module.aws_subnet.aws_subnet.private_subnet_1a
+#   id = "subnet-07ab49d75f74606d3"
+# }
+
+# import {
 #   to = module.aws_subnet.aws_subnet.private_subnet_1c
 #   id = "subnet-064bf7a0032eba3f9"
 # }
@@ -20,11 +25,6 @@ module "aws_subnet" {
 # }
 
 # import {
-#   to = module.aws_subnet.aws_subnet.private_subnet_1a
-#   id = "subnet-07ab49d75f74606d3"
-# }
-
-# import {
-#   to = module.aws_subnet.aws_subnet.private_subnet_1c
-#   id = "subnet-064bf7a0032eba3f9"
+#   to = module.aws_subnet.aws_subnet.public_subnet_1c
+#   id = "subnet-06f775349a692f254"
 # }
