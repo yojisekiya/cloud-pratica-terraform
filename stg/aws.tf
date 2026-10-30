@@ -28,3 +28,8 @@ module "aws_subnet" {
 #   to = module.aws_subnet.aws_subnet.public_subnet_1c
 #   id = "subnet-06f775349a692f254"
 # }
+
+import {
+  to = aws_internet_gateway.gw
+  id = "igw-0e1e01dcc30de1b8f"
+}
