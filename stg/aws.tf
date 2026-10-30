@@ -33,3 +33,11 @@ import {
   to = aws_internet_gateway.gw
   id = "igw-0e1e01dcc30de1b8f"
 }
+
+resource "aws_internet_gateway" "gw" {
+  region = "ap-northeast-1"
+  tags = {
+    Name = "cp-igw-stg"
+  }
+  vpc_id = "vpc-08aea5c1ca995e705"
+}
