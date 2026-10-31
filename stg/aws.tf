@@ -30,11 +30,11 @@ import {
 }
 
 import {
-  to = module.aws_route_table.aws_route_table_association.private["subnet-07ab49d75f74606d3"]
+  to = module.aws_route_table.aws_route_table_association.private["cp-rtb-private/subnet-07ab49d75f74606d3"]
   id = "subnet-07ab49d75f74606d3/rtb-04c18788eaaccb0d9"
 }
 
 import {
-  to = module.aws_route_table.aws_route_table_association.private["subnet-064bf7a0032eba3f9"]
+  to = module.aws_route_table.aws_route_table_association.private["cp-rtb-private/subnet-064bf7a0032eba3f9"]
   id = "subnet-064bf7a0032eba3f9/rtb-04c18788eaaccb0d9"
 }
