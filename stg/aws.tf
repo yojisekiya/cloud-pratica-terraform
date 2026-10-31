@@ -9,27 +9,12 @@ module "aws_subnet" {
   vpc_id = module.aws_vpc.id_cloud_pratica
 }
 
-# import {
-#   to = module.aws_subnet.aws_subnet.private_subnet_1a
-#   id = "subnet-07ab49d75f74606d3"
-# }
-
-# import {
-#   to = module.aws_subnet.aws_subnet.private_subnet_1c
-#   id = "subnet-064bf7a0032eba3f9"
-# }
-
-# import {
-#   to = module.aws_subnet.aws_subnet.public_subnet_1a
-#   id = "subnet-085c5f1a60fe601b0"
-# }
-
-# import {
-#   to = module.aws_subnet.aws_subnet.public_subnet_1c
-#   id = "subnet-06f775349a692f254"
-# }
-
 module "aws_internet_gateway" {
   source = "../modules/aws/internet_gateway"
   env    = "stg"
+}
+
+import {
+  to = aws_route_table.public_rt
+  id = "rtb-02c3903a835c40d33"
 }
