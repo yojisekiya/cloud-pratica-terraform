@@ -12,4 +12,19 @@ locals {
     module.aws_subnet.id_private_1a,
     module.aws_subnet.id_private_1c,
   ]
+  alb_cidr_ipv4s = [
+    "0.0.0.0/0",
+  ]
+  db_security_group_ids = {
+    slack_metrics_backend = "sg-0999d2a144e319edf"
+    bastion               = "sg-060eadaffa92ddd9d"
+    db_migrator           = "sg-0b1474357b7c9b6b1"
+  }
+  nat_cidr_blocks = [
+    "10.0.128.0/18",
+    "10.0.192.0/18"
+  ]
+  referenced_security_group_ids = {
+    alb = "sg-06673ff41409ae988"
+  }
 }
