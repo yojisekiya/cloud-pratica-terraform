@@ -58,24 +58,15 @@ module "aws_sqs" {
   env        = local.env
 }
 
+# ses
 import {
-  to = module.aws_sqs.aws_sqs_queue.slack_metrics
-  id = "https://sqs.ap-northeast-1.amazonaws.com/${local.account_id}/slack-metrics-${local.env}"
+  to = aws_sesv2_email_identity.cloud_pratica
+  id = "stg.yojisekiya.com"
 }
 
 import {
-  to = module.aws_sqs.aws_sqs_queue_policy.slack_metrics
-  id = "https://sqs.ap-northeast-1.amazonaws.com/${local.account_id}/slack-metrics-${local.env}"
-}
-
-import {
-  to = module.aws_sqs.aws_sqs_queue.slack_metrics_dlq
-  id = "https://sqs.ap-northeast-1.amazonaws.com/${local.account_id}/slack-metrics-dlq-${local.env}"
-}
-
-import {
-  to = module.aws_sqs.aws_sqs_queue_policy.slack_metrics_dlq
-  id = "https://sqs.ap-northeast-1.amazonaws.com/${local.account_id}/slack-metrics-dlq-${local.env}"
+  to = aws_sesv2_email_identity_mail_from_attributes.cloud_pratica
+  id = "yojisekiya@gmail.com"
 }
 
 # ecr unit
