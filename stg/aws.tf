@@ -1,20 +1,20 @@
 # vpc
 module "aws_vpc" {
   source = "../modules/aws/vpc"
-  env    = "stg"
+  env    = local.env
 }
 
 # subnet
 module "aws_subnet" {
   source = "../modules/aws/subnet"
-  env    = "stg"
+  env    = local.env
   vpc_id = module.aws_vpc.id_cloud_pratica
 }
 
 # internet gateway
 module "aws_internet_gateway" {
   source = "../modules/aws/internet_gateway"
-  env    = "stg"
+  env    = local.env
 }
 
 # route table
@@ -36,26 +36,51 @@ module "aws_security_group" {
   db_security_group_ids         = local.db_security_group_ids
   nat_cidr_blocks               = local.nat_cidr_blocks
   referenced_security_group_ids = local.referenced_security_group_ids
-  env                           = "stg"
+  env                           = local.env
 }
 
 # ecr
+module "aws_ecr" {
+  source = "../modules/aws/ecr"
+  env    = local.env
+}
+
 import {
-  to = aws_ecr_repository.db_migrator
+  to = module.aws_ecr.aws_ecr_repository.db_migrator
   id = "db-migrator-stg"
 }
 
 import {
-  to = aws_ecr_lifecycle_policy.db_migrator
+  to = module.aws_ecr.aws_ecr_lifecycle_policy.db_migrator
   id = "db-migrator-stg"
 }
 
 import {
-  to = aws_ecr_repository.slack_metrics
+  to = module.aws_ecr.aws_ecr_repository.slack_metrics
   id = "slack-metrics-stg"
 }
 
 import {
-  to = aws_ecr_lifecycle_policy.slack_metrics
+  to = module.aws_ecr.aws_ecr_lifecycle_policy.slack_metrics
   id = "slack-metrics-stg"
 }
+
+# import {
+#   to = aws_ecr_repository.db_migrator
+#   id = "db-migrator-stg"
+# }
+
+# import {
+#   to = aws_ecr_lifecycle_policy.db_migrator
+#   id = "db-migrator-stg"
+# }
+
+# import {
+#   to = aws_ecr_repository.slack_metrics
+#   id = "slack-metrics-stg"
+# }
+
+# import {
+#   to = aws_ecr_lifecycle_policy.slack_metrics
+#   id = "slack-metrics-stg"
+# }
