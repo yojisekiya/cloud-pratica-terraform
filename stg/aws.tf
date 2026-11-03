@@ -45,26 +45,32 @@ module "aws_ecr" {
   env    = local.env
 }
 
+# secrets manager
+import {
+  to = aws_secretsmanager_secret.example
+  id = "arn:aws:secretsmanager:ap-northeast-1:742248953342:secret:db-main-instance-stg-kYBcCp"
+}
+
 # ecr unit
-import {
-  to = module.aws_ecr.module.ecr_db_migrator.aws_ecr_repository.main
-  id = "db-migrator-${local.env}"
-}
+# import {
+#   to = module.aws_ecr.module.ecr_db_migrator.aws_ecr_repository.main
+#   id = "db-migrator-${local.env}"
+# }
 
-import {
-  to = module.aws_ecr.module.ecr_db_migrator.aws_ecr_lifecycle_policy.retain_latest_images
-  id = "db-migrator-${local.env}"
-}
+# import {
+#   to = module.aws_ecr.module.ecr_db_migrator.aws_ecr_lifecycle_policy.retain_latest_images
+#   id = "db-migrator-${local.env}"
+# }
 
-import {
-  to = module.aws_ecr.module.ecr_slack_metrics.aws_ecr_repository.main
-  id = "slack-metrics-${local.env}"
-}
+# import {
+#   to = module.aws_ecr.module.ecr_slack_metrics.aws_ecr_repository.main
+#   id = "slack-metrics-${local.env}"
+# }
 
-import {
-  to = module.aws_ecr.module.ecr_slack_metrics.aws_ecr_lifecycle_policy.retain_latest_images
-  id = "slack-metrics-${local.env}"
-}
+# import {
+#   to = module.aws_ecr.module.ecr_slack_metrics.aws_ecr_lifecycle_policy.retain_latest_images
+#   id = "slack-metrics-${local.env}"
+# }
 
 # import {
 #   to = aws_ecr_repository.db_migrator
