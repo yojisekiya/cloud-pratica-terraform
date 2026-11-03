@@ -46,7 +46,7 @@ import {
 }
 
 import {
-  to = module.aws_ecr.aws_ecr_repository.db_migrator
+  to = aws_ecr_lifecycle_policy.example
   id = "db-migrator-stg"
 }
 
