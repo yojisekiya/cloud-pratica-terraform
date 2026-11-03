@@ -53,7 +53,7 @@ module "aws_secrets_manager" {
 
 import {
   to = module.aws_secrets_manager.aws_secretsmanager_secret.db_main_instance
-  id = "arn:aws:secretsmanager:ap-northeast-1:742248953342:secret:db-main-instance-stg-kYBcCp"
+  id = local.secrets_manager_arn
 }
 
 # ecr unit
