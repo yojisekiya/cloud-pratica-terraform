@@ -1,19 +1,23 @@
+# vpc
 module "aws_vpc" {
   source = "../modules/aws/vpc"
   env    = "stg"
 }
 
+# subnet
 module "aws_subnet" {
   source = "../modules/aws/subnet"
   env    = "stg"
   vpc_id = module.aws_vpc.id_cloud_pratica
 }
 
+# internet gateway
 module "aws_internet_gateway" {
   source = "../modules/aws/internet_gateway"
   env    = "stg"
 }
 
+# route table
 module "aws_route_table" {
   source                   = "../modules/aws/route_table"
   env                      = local.env
@@ -24,7 +28,7 @@ module "aws_route_table" {
   nat_network_interface_id = "eni-02e74c31e040c6f7c"
 }
 
-## security group
+# security group
 module "aws_security_group" {
   source                        = "../modules/aws/security_group"
   vpc_id                        = module.aws_vpc.id_cloud_pratica
@@ -42,6 +46,16 @@ import {
 }
 
 import {
+  to = aws_ecr_lifecycle_policy.db_migrator
+  id = "db-migrator-stg"
+}
+
+import {
   to = aws_ecr_repository.slack_metrics
+  id = "slack-metrics-stg"
+}
+
+import {
+  to = aws_ecr_lifecycle_policy.slack_metrics
   id = "slack-metrics-stg"
 }
