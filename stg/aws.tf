@@ -41,21 +41,21 @@ module "aws_security_group" {
 
 # ecr
 import {
-  to = aws_ecr_repository.service
+  to = aws_ecr_repository.db_migrator
   id = "db-migrator-stg"
 }
 
 import {
-  to = aws_ecr_lifecycle_policy.example
+  to = aws_ecr_lifecycle_policy.db_migrator
   id = "db-migrator-stg"
 }
 
 import {
-  to = aws_ecr_repository.service
+  to = aws_ecr_repository.slack_metrics
   id = "slack-metrics-stg"
 }
 
 import {
-  to = aws_ecr_lifecycle_policy.example
+  to = aws_ecr_lifecycle_policy.slack_metrics
   id = "slack-metrics-stg"
 }
