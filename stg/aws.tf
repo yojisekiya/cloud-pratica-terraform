@@ -25,7 +25,7 @@ module "aws_route_table" {
   internet_gateway_id      = module.aws_internet_gateway.id_cloud_pratica
   public_subnet_ids        = local.public_subnet_ids
   private_subnet_ids       = local.private_subnet_ids
-  nat_network_interface_id = "eni-02e74c31e040c6f7c"
+  nat_network_interface_id = local.nat_network_interface_id
 }
 
 # security group

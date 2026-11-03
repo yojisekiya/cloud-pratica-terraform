@@ -12,6 +12,7 @@ locals {
     module.aws_subnet.id_private_1a,
     module.aws_subnet.id_private_1c,
   ]
+  nat_network_interface_id = "eni-02e74c31e040c6f7c"
   alb_cidr_ipv4s = [
     "0.0.0.0/0",
   ]
