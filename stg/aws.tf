@@ -52,24 +52,30 @@ module "aws_secrets_manager" {
 }
 
 # sqs
-import {
-  to = aws_sqs_queue.slack_metrics
-  id = "https://sqs.ap-northeast-1.amazonaws.com/742248953342/slack-metrics-stg"
+module "aws_sqs" {
+  source     = "../modules/aws/sqs"
+  account_id = local.account_id
+  env        = local.env
 }
 
 import {
-  to = aws_sqs_queue_policy.slack_metrics
-  id = "https://sqs.ap-northeast-1.amazonaws.com/742248953342/slack-metrics-stg"
+  to = module.aws_sqs.aws_sqs_queue.slack_metrics
+  id = "https://sqs.ap-northeast-1.amazonaws.com/${local.account_id}/slack-metrics-${local.env}"
 }
 
 import {
-  to = aws_sqs_queue.slack_metrics_dlq
-  id = "https://sqs.ap-northeast-1.amazonaws.com/742248953342/slack-metrics-dlq-stg"
+  to = module.aws_sqs.aws_sqs_queue_policy.slack_metrics
+  id = "https://sqs.ap-northeast-1.amazonaws.com/${local.account_id}/slack-metrics-${local.env}"
 }
 
 import {
-  to = aws_sqs_queue_policy.slack_metrics_dlq
-  id = "https://sqs.ap-northeast-1.amazonaws.com/742248953342/slack-metrics-dlq-stg"
+  to = module.aws_sqs.aws_sqs_queue.slack_metrics_dlq
+  id = "https://sqs.ap-northeast-1.amazonaws.com/${local.account_id}/slack-metrics-dlq-${local.env}"
+}
+
+import {
+  to = module.aws_sqs.aws_sqs_queue_policy.slack_metrics_dlq
+  id = "https://sqs.ap-northeast-1.amazonaws.com/${local.account_id}/slack-metrics-dlq-${local.env}"
 }
 
 # ecr unit
@@ -95,20 +101,20 @@ import {
 
 # import {
 #   to = aws_ecr_repository.db_migrator
-#   id = "db-migrator-stg"
+#   id = "db-migrator-${local.env}"
 # }
 
 # import {
 #   to = aws_ecr_lifecycle_policy.db_migrator
-#   id = "db-migrator-stg"
+#   id = "db-migrator-${local.env}"
 # }
 
 # import {
 #   to = aws_ecr_repository.slack_metrics
-#   id = "slack-metrics-stg"
+#   id = "slack-metrics-${local.env}"
 # }
 
 # import {
 #   to = aws_ecr_lifecycle_policy.slack_metrics
-#   id = "slack-metrics-stg"
+#   id = "slack-metrics-${local.env}"
 # }
