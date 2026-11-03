@@ -59,13 +59,20 @@ module "aws_sqs" {
 }
 
 # ses
+module "aws_ses" {
+  source         = "../modules/aws/ses"
+  base_host      = local.base_host
+  email_identity = local.email_identity
+  env            = local.env
+}
+
 import {
-  to = aws_sesv2_email_identity.cloud_pratica
+  to = module.aws_ses.aws_sesv2_email_identity.cloud_pratica
   id = "stg.yojisekiya.com"
 }
 
 import {
-  to = aws_sesv2_email_identity_mail_from_attributes.cloud_pratica
+  to = module.aws_ses.aws_sesv2_email_identity_mail_from_attributes.cloud_pratica
   id = "yojisekiya@gmail.com"
 }
 
