@@ -12,6 +12,7 @@ locals {
     module.aws_subnet.id_private_1a,
     module.aws_subnet.id_private_1c,
   ]
+  nat_network_interface_id = "eni-02e74c31e040c6f7c"
   alb_cidr_ipv4s = [
     "0.0.0.0/0",
   ]
@@ -27,4 +28,5 @@ locals {
   referenced_security_group_ids = {
     alb = "sg-06673ff41409ae988"
   }
+  secrets_manager_arn = "arn:aws:secretsmanager:ap-northeast-1:742248953342:secret:db-main-instance-stg-kYBcCp"
 }

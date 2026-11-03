@@ -25,7 +25,7 @@ module "aws_route_table" {
   internet_gateway_id      = module.aws_internet_gateway.id_cloud_pratica
   public_subnet_ids        = local.public_subnet_ids
   private_subnet_ids       = local.private_subnet_ids
-  nat_network_interface_id = "eni-02e74c31e040c6f7c"
+  nat_network_interface_id = local.nat_network_interface_id
 }
 
 # security group
@@ -46,9 +46,14 @@ module "aws_ecr" {
 }
 
 # secrets manager
+module "aws_secrets_manager" {
+  source = "../modules/aws/secrets_manager"
+  env    = local.env
+}
+
 import {
-  to = aws_secretsmanager_secret.example
-  id = "arn:aws:secretsmanager:ap-northeast-1:742248953342:secret:db-main-instance-stg-kYBcCp"
+  to = module.aws_secrets_manager.aws_secretsmanager_secret.db_main_instance
+  id = local.secrets_manager_arn
 }
 
 # ecr unit
