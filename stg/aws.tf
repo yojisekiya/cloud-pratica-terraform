@@ -51,9 +51,25 @@ module "aws_secrets_manager" {
   env    = local.env
 }
 
+# sqs
 import {
-  to = module.aws_secrets_manager.aws_secretsmanager_secret.db_main_instance
-  id = local.secrets_manager_arn
+  to = aws_sqs_queue.slack_metrics
+  id = "https://sqs.ap-northeast-1.amazonaws.com/742248953342/slack-metrics-stg"
+}
+
+import {
+  to = aws_sqs_queue_policy.slack_metrics
+  id = "https://sqs.ap-northeast-1.amazonaws.com/742248953342/slack-metrics-stg"
+}
+
+import {
+  to = aws_sqs_queue.slack_metrics_dlq
+  id = "https://sqs.ap-northeast-1.amazonaws.com/742248953342/slack-metrics-dlq-stg"
+}
+
+import {
+  to = aws_sqs_queue_policy.slack_metrics_dlq
+  id = "https://sqs.ap-northeast-1.amazonaws.com/742248953342/slack-metrics-dlq-stg"
 }
 
 # ecr unit
