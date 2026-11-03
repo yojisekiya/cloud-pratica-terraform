@@ -28,5 +28,5 @@ locals {
   referenced_security_group_ids = {
     alb = "sg-06673ff41409ae988"
   }
-  secrets_manager_arn = "arn:aws:secretsmanager:ap-northeast-1:742248953342:secret:db-main-instance-stg-kYBcCp"
+  secrets_manager_arn = "arn:aws:secretsmanager:ap-northeast-1:${local.account_id}:secret:db-main-instance-${local.env}-kYBcCp"
 }
