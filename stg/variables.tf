@@ -52,4 +52,7 @@ locals {
     ses        = module.aws_iam_role.iam_policy_arns.ses
     sqs        = module.aws_iam_role.iam_policy_arns.sqs
   }
+  cp_slack_metrics_client_policy_attachments = {
+    cloud_watch_logs_write = module.aws_iam_role.iam_policy_arns.cloudwatch
+  }
 }

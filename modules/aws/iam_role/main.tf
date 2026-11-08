@@ -120,6 +120,29 @@ resource "aws_iam_role_policy_attachment" "cp_slack_metrics_backend" {
   role       = "cp-slack-metrics-backend-${var.env}"
 }
 
+# slack metrics client
+resource "aws_iam_role" "cp_slack_metrics_client" {
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "amplify.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+  max_session_duration = 3600
+  name                 = "cp-slack-metrics-client-${var.env}"
+}
+
+resource "aws_iam_role_policy_attachment" "cp_slack_metrics_client" {
+  for_each = var.cp_slack_metrics_client_policy_attachments
+
+  policy_arn = each.value
+  role       = "cp-slack-metrics-client-${var.env}"
+}
+
 # policies
 resource "aws_iam_policy" "sqs_read_write" {
   name = "sqs-read-write-${var.env}"
@@ -162,6 +185,18 @@ resource "aws_iam_policy" "secrets_manager_read" {
   policy = jsonencode({
     Statement = [{
       Action   = ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "cloud_watch_logs_write" {
+  name = "cloud-watch-logs-write-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
       Effect   = "Allow"
       Resource = "*"
     }]
