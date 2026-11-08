@@ -66,8 +66,14 @@ module "aws_ses" {
   env            = local.env
 }
 
+# iam role
+module "aws_iam_role" {
+  source = "../modules/aws/iam_role"
+  env    = local.env
+}
+
 import {
-  to = aws_iam_role.cp_db_migrator
+  to = module.aws_iam_role.aws_iam_role.cp_db_migrator
   id = "cp-db-migrator-${local.env}"
 }
 
