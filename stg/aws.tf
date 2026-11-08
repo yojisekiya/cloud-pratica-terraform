@@ -129,10 +129,15 @@ module "aws_iam_role" {
 #   id = "cp-slack-metrics-backend-${local.env}/${each.value}"
 # }
 
-# slack metrics backend
+# slack metrics client
 import {
   to = aws_iam_role.cp_slack_metrics_client
   id = "cp-slack-metrics-client-${local.env}"
+}
+
+import {
+  to = aws_iam_role_policy_attachment.cp_slack_metrics_client
+  id = "arn:aws:iam::${local.account_id}:policy/cloud-watch-logs-write-${local.env}"
 }
 
 # # policies

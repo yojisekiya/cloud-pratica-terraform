@@ -30,14 +30,14 @@ locals {
   }
   secrets_manager_arn = "arn:aws:secretsmanager:ap-northeast-1:${local.account_id}:secret:db-main-instance-${local.env}-kYBcCp"
   email_identity      = "yojisekiya@gmail.com"
-  ssm_core_policy_attachments = {
-    ssm_core = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-  }
   iam_policy_arns = {
     task_execution = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
     ssm_core       = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     s3             = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
     cloudwatch     = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+  }
+  ssm_core_policy_attachments = {
+    ssm_core = local.iam_policy_arns.ssm_core
   }
   ecs_task_execution_policy_attachments = {
     task_execution = local.iam_policy_arns.task_execution
