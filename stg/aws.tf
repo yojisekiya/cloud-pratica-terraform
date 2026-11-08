@@ -131,16 +131,42 @@ module "aws_iam_role" {
 # }
 
 # slack metrics client
+# import {
+#   to = module.aws_iam_role.aws_iam_role.cp_slack_metrics_client
+#   id = "cp-slack-metrics-client-${local.env}"
+# }
+
+# import {
+#   for_each = local.cp_slack_metrics_client_policy_attachments
+
+#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_slack_metrics_client[each.key]
+#   id = "cp-slack-metrics-client-${local.env}/${each.value}"
+# }
+
+# scheduler slack metrics
 import {
-  to = module.aws_iam_role.aws_iam_role.cp_slack_metrics_client
-  id = "cp-slack-metrics-client-${local.env}"
+  to = aws_iam_role.cp_scheduler_slack_metrics
+  id = "cp-scheduler-slack-metrics-${local.env}"
 }
 
 import {
-  for_each = local.cp_slack_metrics_client_policy_attachments
+  to = aws_iam_role_policy_attachment.batch_submit_job
+  id = "arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
+}
 
-  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_slack_metrics_client[each.key]
-  id = "cp-slack-metrics-client-${local.env}/${each.value}"
+import {
+  to = aws_iam_role_policy_attachment.ecs_run_task
+  id = "arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
+}
+
+import {
+  to = aws_iam_role_policy_attachment.lambda_invoke
+  id = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
+}
+
+import {
+  to = aws_iam_role_policy_attachment.pass_role_to_ecs_task
+  id = "arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
 }
 
 # # policies
@@ -164,18 +190,27 @@ import {
 #   id = "arn:aws:iam::${local.account_id}:policy/ses-send-email-${local.env}"
 # }
 
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.cloud_watch_logs_write
+#   id = "arn:aws:iam::${local.account_id}:policy/cloud-watch-logs-write-${local.env}"
+# }
+
 import {
-  to = module.aws_iam_role.aws_iam_policy.cloud_watch_logs_write
-  id = "arn:aws:iam::${local.account_id}:policy/cloud-watch-logs-write-${local.env}"
+  to = aws_iam_policy.ecs_run_task
+  id = "arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
 }
 
-# examples
-# import {
-#   to = aws_ecr_repository.main
-#   id = "db-migrator-${local.env}"
-# }
+import {
+  to = aws_iam_policy.pass_role_to_ecs_task
+  id = "arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
+}
 
-# import {
-#   to = module.aws_ses.aws_sesv2_email_identity.cloud_pratica
-#   id = "stg.yojisekiya.com"
-# }
+import {
+  to = aws_iam_policy.batch_submit_job
+  id = "arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
+}
+
+import {
+  to = aws_iam_policy.lambda_invoke
+  id = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
+}
