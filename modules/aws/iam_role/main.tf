@@ -119,3 +119,53 @@ resource "aws_iam_role_policy_attachment" "cp_slack_metrics_backend" {
   policy_arn = each.value
   role       = "cp-slack-metrics-backend-${var.env}"
 }
+
+# iam policies
+resource "aws_iam_policy" "sqs_read_write" {
+  name = "sqs-read-write-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = ["sqs:SendMessage", "sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:GetQueueAttributes"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+# __generated__ by Terraform from "arn:aws:iam::742248953342:policy/ses-send-email-stg"
+resource "aws_iam_policy" "ses_send_email" {
+  name = "ses-send-email-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = ["ses:SendEmail", "ses:SendRawEmail"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "s3_read" {
+  name = "s3-read-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = ["s3:ListBucket", "s3:GetObject", "s3:GetObjectVersion"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "secrets_manager_read" {
+  name = "secrets-manager-read-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}

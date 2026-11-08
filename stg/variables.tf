@@ -33,17 +33,23 @@ locals {
   ssm_core_policy_attachments = {
     ssm_core = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
-  ecs_task_execution_policy_attachments = {
+  iam_policy_arns = {
     task_execution = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+    ssm_core       = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     s3             = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
     cloudwatch     = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
-    secret_manager = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
+  }
+  ecs_task_execution_policy_attachments = {
+    task_execution = local.iam_policy_arns.task_execution
+    s3             = local.iam_policy_arns.s3
+    cloudwatch     = local.iam_policy_arns.cloudwatch
+    secret_manager = module.aws_iam_role.iam_policy_arns.secrets_manager
   }
   cp_slack_metrics_backend_policy_attachments = {
-    ssm_core   = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-    cloudwatch = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
-    s3         = "arn:aws:iam::${local.account_id}:policy/s3-read-${local.env}"
-    ses        = "arn:aws:iam::${local.account_id}:policy/ses-send-email-${local.env}"
-    sqs        = "arn:aws:iam::${local.account_id}:policy/sqs-read-write-${local.env}"
+    ssm_core   = local.iam_policy_arns.ssm_core
+    cloudwatch = local.iam_policy_arns.cloudwatch
+    s3         = module.aws_iam_role.iam_policy_arns.s3_read
+    ses        = module.aws_iam_role.iam_policy_arns.ses
+    sqs        = module.aws_iam_role.iam_policy_arns.sqs
   }
 }
