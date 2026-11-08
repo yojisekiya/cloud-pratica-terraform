@@ -102,17 +102,48 @@ module "aws_iam_role" {
 #   id = "cp-nat-${local.env}/${local.ssm_core_policy_attachments["ssm_core"]}"
 # }
 
-# ecs task execution
+# # ecs task execution
+# import {
+#   to = module.aws_iam_role.aws_iam_role.ecs_task_execution
+#   id = "ecs-task-execution-${local.env}"
+# }
+
+# import {
+#   for_each = local.ecs_task_execution_policy_attachments
+
+#   to = module.aws_iam_role.aws_iam_role_policy_attachment.ecs_task_execution[each.key]
+#   id = "ecs-task-execution-${local.env}/${each.value}"
+# }
+
+# slack metrics backend
 import {
-  to = module.aws_iam_role.aws_iam_role.ecs_task_execution
-  id = "ecs-task-execution-${local.env}"
+  to = aws_iam_role.cp_slack_metrics_backend
+  id = "cp-slack-metrics-backend-${local.env}"
 }
 
 import {
-  for_each = local.ecs_task_execution_policy_attachments
+  to = aws_iam_role_policy_attachment.ssm_core
+  id = "cp-slack-metrics-backend-${local.env}/${local.cp_slack_metrics_backend_policy_attachments.ssm_core}"
+}
 
-  to = module.aws_iam_role.aws_iam_role_policy_attachment.ecs_task_execution[each.key]
-  id = "ecs-task-execution-${local.env}/${each.value}"
+import {
+  to = aws_iam_role_policy_attachment.cloudwatch
+  id = "cp-slack-metrics-backend-${local.env}/${local.cp_slack_metrics_backend_policy_attachments.cloudwatch}"
+}
+
+import {
+  to = aws_iam_role_policy_attachment.s3
+  id = "cp-slack-metrics-backend-${local.env}/${local.cp_slack_metrics_backend_policy_attachments.s3}"
+}
+
+import {
+  to = aws_iam_role_policy_attachment.ses
+  id = "cp-slack-metrics-backend-${local.env}/${local.cp_slack_metrics_backend_policy_attachments.ses}"
+}
+
+import {
+  to = aws_iam_role_policy_attachment.sqs
+  id = "cp-slack-metrics-backend-${local.env}/${local.cp_slack_metrics_backend_policy_attachments.sqs}"
 }
 
 # examples
