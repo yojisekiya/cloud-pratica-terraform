@@ -17,3 +17,7 @@ variable "cp_slack_metrics_backend_policy_attachments" {
 variable "cp_slack_metrics_client_policy_attachments" {
   type = map(string)
 }
+
+variable "cp_scheduler_slack_metrics_policy_attachments" {
+  type = map(string)
+}

@@ -68,12 +68,13 @@ module "aws_ses" {
 
 ## iam role
 module "aws_iam_role" {
-  source                                      = "../modules/aws/iam_role"
-  ssm_core_policy_attachments                 = local.ssm_core_policy_attachments
-  ecs_task_execution_policy_attachments       = local.ecs_task_execution_policy_attachments
-  cp_slack_metrics_backend_policy_attachments = local.cp_slack_metrics_backend_policy_attachments
-  cp_slack_metrics_client_policy_attachments  = local.cp_slack_metrics_client_policy_attachments
-  env                                         = local.env
+  source                                        = "../modules/aws/iam_role"
+  ssm_core_policy_attachments                   = local.ssm_core_policy_attachments
+  ecs_task_execution_policy_attachments         = local.ecs_task_execution_policy_attachments
+  cp_slack_metrics_backend_policy_attachments   = local.cp_slack_metrics_backend_policy_attachments
+  cp_slack_metrics_client_policy_attachments    = local.cp_slack_metrics_client_policy_attachments
+  cp_scheduler_slack_metrics_policy_attachments = local.cp_scheduler_slack_metrics_policy_attachments
+  env                                           = local.env
 }
 
 # # db migrator
