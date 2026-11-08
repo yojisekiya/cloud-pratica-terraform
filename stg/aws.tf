@@ -68,9 +68,10 @@ module "aws_ses" {
 
 ## iam role
 module "aws_iam_role" {
-  source                      = "../modules/aws/iam_role"
-  ssm_core_policy_attachments = local.ssm_core_policy_attachments
-  env                         = local.env
+  source                                = "../modules/aws/iam_role"
+  ssm_core_policy_attachments           = local.ssm_core_policy_attachments
+  ecs_task_execution_policy_attachments = local.ecs_task_execution_policy_attachments
+  env                                   = local.env
 }
 
 # # db migrator
@@ -103,28 +104,15 @@ module "aws_iam_role" {
 
 # ecs task execution
 import {
-  to = aws_iam_role.ecs_task_execution
+  to = module.aws_iam_role.aws_iam_role.ecs_task_execution
   id = "ecs-task-execution-${local.env}"
 }
 
 import {
-  to = aws_iam_role_policy_attachment.task_execution
-  id = "ecs-task-execution-${local.env}/${local.ecs_task_execution_policy_attachments.task_execution}"
-}
+  for_each = local.ecs_task_execution_policy_attachments
 
-import {
-  to = aws_iam_role_policy_attachment.s3
-  id = "ecs-task-execution-${local.env}/${local.ecs_task_execution_policy_attachments.s3}"
-}
-
-import {
-  to = aws_iam_role_policy_attachment.cloudwatch
-  id = "ecs-task-execution-${local.env}/${local.ecs_task_execution_policy_attachments.cloudwatch}"
-}
-
-import {
-  to = aws_iam_role_policy_attachment.secret_manager
-  id = "ecs-task-execution-${local.env}/${local.ecs_task_execution_policy_attachments.secret_manager}"
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.ecs_task_execution[each.key]
+  id = "ecs-task-execution-${local.env}/${each.value}"
 }
 
 # examples

@@ -33,4 +33,10 @@ locals {
   ssm_core_policy_attachments = {
     ssm_core = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
+  ecs_task_execution_policy_attachments = {
+    task_execution = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+    s3             = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+    cloudwatch     = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+    secret_manager = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
+  }
 }
