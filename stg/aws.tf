@@ -129,25 +129,36 @@ module "aws_iam_role" {
 #   id = "cp-slack-metrics-backend-${local.env}/${each.value}"
 # }
 
-# policies
+# slack metrics backend
 import {
-  to = module.aws_iam_role.aws_iam_policy.secrets_manager_read
-  id = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
+  to = aws_iam_role.cp_slack_metrics_client
+  id = "cp-slack-metrics-client-${local.env}"
 }
 
-import {
-  to = module.aws_iam_role.aws_iam_policy.s3_read
-  id = "arn:aws:iam::${local.account_id}:policy/s3-read-${local.env}"
-}
+# # policies
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.secrets_manager_read
+#   id = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
+# }
+
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.s3_read
+#   id = "arn:aws:iam::${local.account_id}:policy/s3-read-${local.env}"
+# }
+
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.sqs_read_write
+#   id = "arn:aws:iam::${local.account_id}:policy/sqs-read-write-${local.env}"
+# }
+
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.ses_send_email
+#   id = "arn:aws:iam::${local.account_id}:policy/ses-send-email-${local.env}"
+# }
 
 import {
-  to = module.aws_iam_role.aws_iam_policy.sqs_read_write
-  id = "arn:aws:iam::${local.account_id}:policy/sqs-read-write-${local.env}"
-}
-
-import {
-  to = module.aws_iam_role.aws_iam_policy.ses_send_email
-  id = "arn:aws:iam::${local.account_id}:policy/ses-send-email-${local.env}"
+  to = aws_iam_policy.cloud_watch_logs_write
+  id = "arn:aws:iam::${local.account_id}:policy/cloud-watch-logs-write-${local.env}"
 }
 
 # examples
