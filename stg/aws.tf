@@ -72,6 +72,7 @@ module "aws_iam_role" {
   ssm_core_policy_attachments                 = local.ssm_core_policy_attachments
   ecs_task_execution_policy_attachments       = local.ecs_task_execution_policy_attachments
   cp_slack_metrics_backend_policy_attachments = local.cp_slack_metrics_backend_policy_attachments
+  cp_slack_metrics_client_policy_attachments  = local.cp_slack_metrics_client_policy_attachments
   env                                         = local.env
 }
 
@@ -131,13 +132,15 @@ module "aws_iam_role" {
 
 # slack metrics client
 import {
-  to = aws_iam_role.cp_slack_metrics_client
+  to = module.aws_iam_role.aws_iam_role.cp_slack_metrics_client
   id = "cp-slack-metrics-client-${local.env}"
 }
 
 import {
-  to = aws_iam_role_policy_attachment.cp_slack_metrics_client
-  id = "arn:aws:iam::${local.account_id}:policy/cloud-watch-logs-write-${local.env}"
+  for_each = local.cp_slack_metrics_client_policy_attachments
+
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_slack_metrics_client[each.key]
+  id = "cp-slack-metrics-client-${local.env}/${each.value}"
 }
 
 # # policies
@@ -162,7 +165,7 @@ import {
 # }
 
 import {
-  to = aws_iam_policy.cloud_watch_logs_write
+  to = module.aws_iam_role.aws_iam_policy.cloud_watch_logs_write
   id = "arn:aws:iam::${local.account_id}:policy/cloud-watch-logs-write-${local.env}"
 }
 
