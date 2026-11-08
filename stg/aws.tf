@@ -131,17 +131,22 @@ import {
 
 # policies
 import {
-  to = aws_iam_policy.secrets_manager_read
+  to = aws_iam_policy.secrets_manager
   id = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
 }
 
 import {
-  to = aws_iam_policy.sqs_read_write
+  to = aws_iam_policy.s3
+  id = "arn:aws:iam::${local.account_id}:policy/s3-read-${local.env}"
+}
+
+import {
+  to = aws_iam_policy.sqs
   id = "arn:aws:iam::${local.account_id}:policy/sqs-read-write-${local.env}"
 }
 
 import {
-  to = aws_iam_policy.ses_send_email
+  to = aws_iam_policy.ses
   id = "arn:aws:iam::${local.account_id}:policy/ses-send-email-${local.env}"
 }
 
