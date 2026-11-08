@@ -117,17 +117,17 @@ module "aws_iam_role" {
 # }
 
 # slack metrics backend
-import {
-  to = module.aws_iam_role.aws_iam_role.cp_slack_metrics_backend
-  id = "cp-slack-metrics-backend-${local.env}"
-}
+# import {
+#   to = module.aws_iam_role.aws_iam_role.cp_slack_metrics_backend
+#   id = "cp-slack-metrics-backend-${local.env}"
+# }
 
-import {
-  for_each = local.cp_slack_metrics_backend_policy_attachments
+# import {
+#   for_each = local.cp_slack_metrics_backend_policy_attachments
 
-  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_slack_metrics_backend[each.key]
-  id = "cp-slack-metrics-backend-${local.env}/${each.value}"
-}
+#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_slack_metrics_backend[each.key]
+#   id = "cp-slack-metrics-backend-${local.env}/${each.value}"
+# }
 
 # policies
 import {
