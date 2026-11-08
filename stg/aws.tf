@@ -131,12 +131,12 @@ module "aws_iam_role" {
 
 # policies
 import {
-  to = module.aws_iam_role.aws_iam_policy.secrets_manager_read
+  to = aws_iam_policy.secrets_manager_read
   id = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
 }
 
 import {
-  to = module.aws_iam_role.aws_iam_policy.s3_read
+  to = aws_iam_policy.s3_read
   id = "arn:aws:iam::${local.account_id}:policy/s3-read-${local.env}"
 }
 
