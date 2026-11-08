@@ -143,6 +143,29 @@ resource "aws_iam_role_policy_attachment" "cp_slack_metrics_client" {
   role       = "cp-slack-metrics-client-${var.env}"
 }
 
+# cp scheduler slack metrics
+resource "aws_iam_role" "cp_scheduler_slack_metrics" {
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "scheduler.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+  max_session_duration = 3600
+  name                 = "cp-scheduler-slack-metrics-${var.env}"
+}
+
+resource "aws_iam_role_policy_attachment" "cp_scheduler_slack_metrics" {
+  for_each = var.cp_scheduler_slack_metrics_policy_attachments
+
+  policy_arn = each.value
+  role       = aws_iam_role.cp_scheduler_slack_metrics.name
+}
+
 # policies
 resource "aws_iam_policy" "sqs_read_write" {
   name = "sqs-read-write-${var.env}"
@@ -197,6 +220,59 @@ resource "aws_iam_policy" "cloud_watch_logs_write" {
   policy = jsonencode({
     Statement = [{
       Action   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "ecs_run_task" {
+  name = "ecs-run-task-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = "ecs:RunTask"
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "lambda_invoke" {
+  name = "lambda-invoke-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = ["lambda:InvokeFunction", "lambda:GetFunctionConfiguration"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "batch_submit_job" {
+  name = "batch-submit-job-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = ["batch:SubmitJob"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "pass_role_to_ecs_task" {
+  name = "pass-role-to-ecs-task-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action = "iam:PassRole"
+      Condition = {
+        StringEquals = {
+          "iam:PassedToService" = "ecs-tasks.amazonaws.com"
+        }
+      }
       Effect   = "Allow"
       Resource = "*"
     }]

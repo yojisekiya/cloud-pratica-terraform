@@ -55,4 +55,10 @@ locals {
   cp_slack_metrics_client_policy_attachments = {
     cloud_watch_logs_write = module.aws_iam_role.iam_policy_arns.cloudwatch
   }
+  cp_scheduler_slack_metrics_policy_attachments = {
+    batch_submit_job      = module.aws_iam_role.iam_policy_arns.batch_submit_job
+    ecs_run_task          = module.aws_iam_role.iam_policy_arns.ecs_run_task
+    lambda_invoke         = module.aws_iam_role.iam_policy_arns.lambda_invoke
+    pass_role_to_ecs_task = module.aws_iam_role.iam_policy_arns.pass_role_to_ecs_task
+  }
 }
