@@ -120,7 +120,7 @@ resource "aws_iam_role_policy_attachment" "cp_slack_metrics_backend" {
   role       = "cp-slack-metrics-backend-${var.env}"
 }
 
-# iam policies
+# policies
 resource "aws_iam_policy" "sqs_read_write" {
   name = "sqs-read-write-${var.env}"
   policy = jsonencode({
@@ -133,7 +133,6 @@ resource "aws_iam_policy" "sqs_read_write" {
   })
 }
 
-# __generated__ by Terraform from "arn:aws:iam::742248953342:policy/ses-send-email-stg"
 resource "aws_iam_policy" "ses_send_email" {
   name = "ses-send-email-${var.env}"
   policy = jsonencode({
