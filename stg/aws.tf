@@ -92,12 +92,12 @@ import {
 
 # nat
 import {
-  to = aws_iam_role.cp_nat
+  to = module.aws_iam_role.aws_iam_role.cp_nat
   id = "cp-nat-${local.env}"
 }
 
 import {
-  to = aws_iam_role_policy_attachment.cp_nat
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_nat["ssm_core"]
   id = "cp-nat-${local.env}/${local.ssm_core_policy_attachments["ssm_core"]}"
 }
 
