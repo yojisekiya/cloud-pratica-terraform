@@ -67,52 +67,17 @@ module "aws_ses" {
 }
 
 import {
-  to = module.aws_ses.aws_sesv2_email_identity.cloud_pratica
-  id = "stg.yojisekiya.com"
+  to = aws_iam_role.cp_db_migrator
+  id = "cp-db-migrator-${local.env}"
 }
 
-import {
-  to = module.aws_ses.aws_sesv2_email_identity_mail_from_attributes.cloud_pratica
-  id = "yojisekiya@gmail.com"
-}
-
-# ecr unit
+# examples
 # import {
 #   to = module.aws_ecr.module.ecr_db_migrator.aws_ecr_repository.main
 #   id = "db-migrator-${local.env}"
 # }
 
 # import {
-#   to = module.aws_ecr.module.ecr_db_migrator.aws_ecr_lifecycle_policy.retain_latest_images
-#   id = "db-migrator-${local.env}"
-# }
-
-# import {
-#   to = module.aws_ecr.module.ecr_slack_metrics.aws_ecr_repository.main
-#   id = "slack-metrics-${local.env}"
-# }
-
-# import {
-#   to = module.aws_ecr.module.ecr_slack_metrics.aws_ecr_lifecycle_policy.retain_latest_images
-#   id = "slack-metrics-${local.env}"
-# }
-
-# import {
-#   to = aws_ecr_repository.db_migrator
-#   id = "db-migrator-${local.env}"
-# }
-
-# import {
-#   to = aws_ecr_lifecycle_policy.db_migrator
-#   id = "db-migrator-${local.env}"
-# }
-
-# import {
-#   to = aws_ecr_repository.slack_metrics
-#   id = "slack-metrics-${local.env}"
-# }
-
-# import {
-#   to = aws_ecr_lifecycle_policy.slack_metrics
-#   id = "slack-metrics-${local.env}"
+#   to = module.aws_ses.aws_sesv2_email_identity.cloud_pratica
+#   id = "stg.yojisekiya.com"
 # }
