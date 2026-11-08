@@ -65,3 +65,27 @@ resource "aws_iam_role_policy_attachment" "cp_nat" {
   role       = aws_iam_role.cp_nat.name
   policy_arn = each.value
 }
+
+# ecs task execution
+resource "aws_iam_role" "ecs_task_execution" {
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ecs-tasks.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+  description          = "Allows ECS tasks to call AWS services on your behalf."
+  max_session_duration = 3600
+  name                 = "ecs-task-execution-stg"
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
+  for_each = var.ecs_task_execution_policy_attachments
+
+  role       = aws_iam_role.ecs_task_execution.name
+  policy_arn = each.value
+}
