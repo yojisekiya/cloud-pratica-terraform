@@ -66,20 +66,32 @@ module "aws_ses" {
   env            = local.env
 }
 
-# iam role
+## iam role
 module "aws_iam_role" {
   source = "../modules/aws/iam_role"
   env    = local.env
 }
 
+# db migrator
+# import {
+#   to = module.aws_iam_role.aws_iam_role.cp_db_migrator
+#   id = "cp-db-migrator-${local.env}"
+# }
+
+# bastion
 import {
-  to = module.aws_iam_role.aws_iam_role.cp_db_migrator
-  id = "cp-db-migrator-${local.env}"
+  to = aws_iam_role.cp_bastion
+  id = "cp-bastion-${local.env}"
+}
+
+import {
+  to = aws_iam_role_policy_attachment.cp_bastion
+  id = "cp-bastion-${local.env}/arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
 # examples
 # import {
-#   to = module.aws_ecr.module.ecr_db_migrator.aws_ecr_repository.main
+#   to = aws_ecr_repository.main
 #   id = "db-migrator-${local.env}"
 # }
 
