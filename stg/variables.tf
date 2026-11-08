@@ -39,4 +39,11 @@ locals {
     cloudwatch     = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
     secret_manager = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
   }
+  cp_slack_metrics_backend_policy_attachments = {
+    ssm_core   = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    cloudwatch = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+    s3         = "arn:aws:iam::${local.account_id}:policy/s3-read-${local.env}"
+    ses        = "arn:aws:iam::${local.account_id}:policy/ses-send-email-${local.env}"
+    sqs        = "arn:aws:iam::${local.account_id}:policy/sqs-read-write-${local.env}"
+  }
 }
