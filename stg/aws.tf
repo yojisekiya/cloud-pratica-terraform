@@ -151,22 +151,22 @@ import {
 
 import {
   to = aws_iam_role_policy_attachment.batch_submit_job
-  id = "arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
+  id = "cp-scheduler-slack-metrics-${local.env}/arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
 }
 
 import {
   to = aws_iam_role_policy_attachment.ecs_run_task
-  id = "arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
+  id = "cp-scheduler-slack-metrics-${local.env}/arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
 }
 
 import {
   to = aws_iam_role_policy_attachment.lambda_invoke
-  id = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
+  id = "cp-scheduler-slack-metrics-${local.env}/arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
 }
 
 import {
   to = aws_iam_role_policy_attachment.pass_role_to_ecs_task
-  id = "arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
+  id = "cp-scheduler-slack-metrics-${local.env}/arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
 }
 
 # # policies
