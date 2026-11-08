@@ -68,10 +68,11 @@ module "aws_ses" {
 
 ## iam role
 module "aws_iam_role" {
-  source                                = "../modules/aws/iam_role"
-  ssm_core_policy_attachments           = local.ssm_core_policy_attachments
-  ecs_task_execution_policy_attachments = local.ecs_task_execution_policy_attachments
-  env                                   = local.env
+  source                                      = "../modules/aws/iam_role"
+  ssm_core_policy_attachments                 = local.ssm_core_policy_attachments
+  ecs_task_execution_policy_attachments       = local.ecs_task_execution_policy_attachments
+  cp_slack_metrics_backend_policy_attachments = local.cp_slack_metrics_backend_policy_attachments
+  env                                         = local.env
 }
 
 # # db migrator
@@ -117,33 +118,15 @@ module "aws_iam_role" {
 
 # slack metrics backend
 import {
-  to = aws_iam_role.cp_slack_metrics_backend
+  to = module.aws_iam_role.aws_iam_role.cp_slack_metrics_backend
   id = "cp-slack-metrics-backend-${local.env}"
 }
 
 import {
-  to = aws_iam_role_policy_attachment.ssm_core
-  id = "cp-slack-metrics-backend-${local.env}/${local.cp_slack_metrics_backend_policy_attachments.ssm_core}"
-}
+  for_each = local.cp_slack_metrics_backend_policy_attachments
 
-import {
-  to = aws_iam_role_policy_attachment.cloudwatch
-  id = "cp-slack-metrics-backend-${local.env}/${local.cp_slack_metrics_backend_policy_attachments.cloudwatch}"
-}
-
-import {
-  to = aws_iam_role_policy_attachment.s3
-  id = "cp-slack-metrics-backend-${local.env}/${local.cp_slack_metrics_backend_policy_attachments.s3}"
-}
-
-import {
-  to = aws_iam_role_policy_attachment.ses
-  id = "cp-slack-metrics-backend-${local.env}/${local.cp_slack_metrics_backend_policy_attachments.ses}"
-}
-
-import {
-  to = aws_iam_role_policy_attachment.sqs
-  id = "cp-slack-metrics-backend-${local.env}/${local.cp_slack_metrics_backend_policy_attachments.sqs}"
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_slack_metrics_backend[each.key]
+  id = "cp-slack-metrics-backend-${local.env}/${each.value}"
 }
 
 # examples
