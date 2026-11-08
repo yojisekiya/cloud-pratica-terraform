@@ -73,32 +73,58 @@ module "aws_iam_role" {
   env                         = local.env
 }
 
-# db migrator
+# # db migrator
+# import {
+#   to = module.aws_iam_role.aws_iam_role.cp_db_migrator
+#   id = "cp-db-migrator-${local.env}"
+# }
+
+# # bastion
+# import {
+#   to = module.aws_iam_role.aws_iam_role.cp_bastion
+#   id = "cp-bastion-${local.env}"
+# }
+
+# import {
+#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_bastion["ssm_core"]
+#   id = "cp-bastion-${local.env}/${local.ssm_core_policy_attachments["ssm_core"]}"
+# }
+
+# # nat
+# import {
+#   to = module.aws_iam_role.aws_iam_role.cp_nat
+#   id = "cp-nat-${local.env}"
+# }
+
+# import {
+#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_nat["ssm_core"]
+#   id = "cp-nat-${local.env}/${local.ssm_core_policy_attachments["ssm_core"]}"
+# }
+
+# ecs task execution
 import {
-  to = module.aws_iam_role.aws_iam_role.cp_db_migrator
-  id = "cp-db-migrator-${local.env}"
+  to = aws_iam_role.ecs_task_execution
+  id = "ecs-task-execution-${local.env}"
 }
 
-# bastion
 import {
-  to = module.aws_iam_role.aws_iam_role.cp_bastion
-  id = "cp-bastion-${local.env}"
+  to = aws_iam_role_policy_attachment.task_execution
+  id = "ecs-task-execution-${local.env}/${local.ecs_task_execution_policy_attachments.task_execution}"
 }
 
 import {
-  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_bastion["ssm_core"]
-  id = "cp-bastion-${local.env}/${local.ssm_core_policy_attachments["ssm_core"]}"
-}
-
-# nat
-import {
-  to = module.aws_iam_role.aws_iam_role.cp_nat
-  id = "cp-nat-${local.env}"
+  to = aws_iam_role_policy_attachment.s3
+  id = "ecs-task-execution-${local.env}/${local.ecs_task_execution_policy_attachments.s3}"
 }
 
 import {
-  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_nat["ssm_core"]
-  id = "cp-nat-${local.env}/${local.ssm_core_policy_attachments["ssm_core"]}"
+  to = aws_iam_role_policy_attachment.cloudwatch
+  id = "ecs-task-execution-${local.env}/${local.ecs_task_execution_policy_attachments.cloudwatch}"
+}
+
+import {
+  to = aws_iam_role_policy_attachment.secret_manager
+  id = "ecs-task-execution-${local.env}/${local.ecs_task_execution_policy_attachments.secret_manager}"
 }
 
 # examples
