@@ -89,3 +89,33 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   role       = aws_iam_role.ecs_task_execution.name
   policy_arn = each.value
 }
+
+# slack metrics backend
+resource "aws_iam_role" "cp_slack_metrics_backend" {
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "ecs-tasks.amazonaws.com"
+      }
+      }, {
+      Action = ["sts:AssumeRole", "sts:TagSession"]
+      Effect = "Allow"
+      Principal = {
+        Service = "pods.eks.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+  description          = "Allows SSM to call AWS services on your behalf"
+  max_session_duration = 3600
+  name                 = "cp-slack-metrics-backend-${var.env}"
+}
+
+resource "aws_iam_role_policy_attachment" "cp_slack_metrics_backend" {
+  for_each = var.cp_slack_metrics_backend_policy_attachments
+
+  policy_arn = each.value
+  role       = "cp-slack-metrics-backend-${var.env}"
+}
