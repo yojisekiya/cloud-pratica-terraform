@@ -30,7 +30,7 @@ locals {
   }
   secrets_manager_arn = "arn:aws:secretsmanager:ap-northeast-1:${local.account_id}:secret:db-main-instance-${local.env}-kYBcCp"
   email_identity      = "yojisekiya@gmail.com"
-  bastion_policy_attachments = {
+  ssm_core_policy_attachments = {
     ssm_core = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
 }

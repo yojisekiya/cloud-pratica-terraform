@@ -2,6 +2,6 @@ variable "env" {
   type = string
 }
 
-variable "bastion_policy_attachments" {
+variable "ssm_core_policy_attachments" {
   type = map(string)
 }
