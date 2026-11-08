@@ -129,6 +129,22 @@ import {
   id = "cp-slack-metrics-backend-${local.env}/${each.value}"
 }
 
+# policies
+import {
+  to = aws_iam_policy.secrets_manager_read
+  id = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
+}
+
+import {
+  to = aws_iam_policy.sqs_read_write
+  id = "arn:aws:iam::${local.account_id}:policy/sqs-read-write-${local.env}"
+}
+
+import {
+  to = aws_iam_policy.ses_send_email
+  id = "arn:aws:iam::${local.account_id}:policy/ses-send-email-${local.env}"
+}
+
 # examples
 # import {
 #   to = aws_ecr_repository.main
