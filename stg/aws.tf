@@ -159,16 +159,27 @@ module "aws_iam_role" {
 # }
 
 # scheduler cost cutter
+# import {
+#   to = module.aws_iam_role.aws_iam_role.cp_scheduler_cost_cutter
+#   id = "cp-scheduler-cost-cutter-${local.env}"
+# }
+
+# import {
+#   for_each = local.cp_scheduler_cost_cutter_policy_attachments
+
+#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_scheduler_cost_cutter[each.key]
+#   id = "cp-scheduler-cost-cutter-${local.env}/${each.value}"
+# }
+
+# administrator
 import {
-  to = module.aws_iam_role.aws_iam_role.cp_scheduler_cost_cutter
-  id = "cp-scheduler-cost-cutter-${local.env}"
+  to = aws_iam_role.administrator
+  id = "administrator-${local.env}"
 }
 
 import {
-  for_each = local.cp_scheduler_cost_cutter_policy_attachments
-
-  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_scheduler_cost_cutter[each.key]
-  id = "cp-scheduler-cost-cutter-${local.env}/${each.value}"
+  to = aws_iam_role_policy_attachment.administrator
+  id = "administrator-${local.env}/arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 # # policies
@@ -217,17 +228,17 @@ import {
 #   id = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
 # }
 
-import {
-  to = module.aws_iam_role.aws_iam_policy.rds_start_stop
-  id = "arn:aws:iam::${local.account_id}:policy/rds-start-stop-${local.env}"
-}
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.rds_start_stop
+#   id = "arn:aws:iam::${local.account_id}:policy/rds-start-stop-${local.env}"
+# }
 
-import {
-  to = module.aws_iam_role.aws_iam_policy.ec2_start_stop
-  id = "arn:aws:iam::${local.account_id}:policy/ec2-start-stop-${local.env}"
-}
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.ec2_start_stop
+#   id = "arn:aws:iam::${local.account_id}:policy/ec2-start-stop-${local.env}"
+# }
 
-import {
-  to = module.aws_iam_role.aws_iam_policy.ecs_write
-  id = "arn:aws:iam::${local.account_id}:policy/ecs-write-${local.env}"
-}
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.ecs_write
+#   id = "arn:aws:iam::${local.account_id}:policy/ecs-write-${local.env}"
+# }
