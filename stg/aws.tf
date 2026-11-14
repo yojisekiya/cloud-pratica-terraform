@@ -74,6 +74,7 @@ module "aws_iam_role" {
   cp_slack_metrics_backend_policy_attachments   = local.cp_slack_metrics_backend_policy_attachments
   cp_slack_metrics_client_policy_attachments    = local.cp_slack_metrics_client_policy_attachments
   cp_scheduler_slack_metrics_policy_attachments = local.cp_scheduler_slack_metrics_policy_attachments
+  cp_scheduler_cost_cutter_policy_attachments   = local.cp_scheduler_cost_cutter_policy_attachments
   env                                           = local.env
 }
 
@@ -164,18 +165,10 @@ import {
 }
 
 import {
-  to = aws_iam_role_policy_attachment.cp_scheduler_cost_cutter_rds_start_stop
-  id = "cp-scheduler-cost-cutter-${local.env}/arn:aws:iam::${local.account_id}:policy/rds-start-stop-${local.env}"
-}
+  for_each = local.cp_scheduler_cost_cutter_policy_attachments
 
-import {
-  to = aws_iam_role_policy_attachment.cp_scheduler_cost_cutter_ec2_start_stop
-  id = "cp-scheduler-cost-cutter-${local.env}/arn:aws:iam::${local.account_id}:policy/ec2-start-stop-${local.env}"
-}
-
-import {
-  to = aws_iam_role_policy_attachment.cp_scheduler_cost_cutter_ecs_write
-  id = "cp-scheduler-cost-cutter-${local.env}/arn:aws:iam::${local.account_id}:policy/ecs-write-${local.env}"
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_scheduler_cost_cutter[each.key]
+  id = "cp-scheduler-cost-cutter-${local.env}/${each.value}"
 }
 
 # # policies

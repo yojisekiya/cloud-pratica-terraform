@@ -61,4 +61,9 @@ locals {
     lambda_invoke         = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
     pass_role_to_ecs_task = "arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
   }
+  cp_scheduler_cost_cutter_policy_attachments = {
+    rds_start_stop = "arn:aws:iam::${local.account_id}:policy/rds-start-stop-${local.env}"
+    ec2_start_stop = "arn:aws:iam::${local.account_id}:policy/ec2-start-stop-${local.env}"
+    ecs_write      = "arn:aws:iam::${local.account_id}:policy/ecs-write-${local.env}"
+  }
 }
