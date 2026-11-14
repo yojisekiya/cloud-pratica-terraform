@@ -43,22 +43,22 @@ locals {
     task_execution = local.iam_policy_arns.task_execution
     s3             = local.iam_policy_arns.s3
     cloudwatch     = local.iam_policy_arns.cloudwatch
-    secret_manager = module.aws_iam_role.iam_policy_arns.secrets_manager
+    secret_manager = "arn:aws:iam::${local.account_id}:policy/secret-manager-read-${local.env}"
   }
   cp_slack_metrics_backend_policy_attachments = {
     ssm_core   = local.iam_policy_arns.ssm_core
     cloudwatch = local.iam_policy_arns.cloudwatch
-    s3         = module.aws_iam_role.iam_policy_arns.s3_read
-    ses        = module.aws_iam_role.iam_policy_arns.ses
-    sqs        = module.aws_iam_role.iam_policy_arns.sqs
+    s3         = "arn:aws:iam::${local.account_id}:policy/s3-read-${local.env}"
+    ses        = "arn:aws:iam::${local.account_id}:policy/ses-${local.env}"
+    sqs        = "arn:aws:iam::${local.account_id}:policy/sqs-${local.env}"
   }
   cp_slack_metrics_client_policy_attachments = {
-    cloud_watch_logs_write = module.aws_iam_role.iam_policy_arns.cloudwatch
+    cloud_watch_logs_write = "arn:aws:iam::${local.account_id}:policy/clout-watch-logs-write-${local.env}"
   }
   cp_scheduler_slack_metrics_policy_attachments = {
-    batch_submit_job      = module.aws_iam_role.iam_policy_arns.batch_submit_job
-    ecs_run_task          = module.aws_iam_role.iam_policy_arns.ecs_run_task
-    lambda_invoke         = module.aws_iam_role.iam_policy_arns.lambda_invoke
-    pass_role_to_ecs_task = module.aws_iam_role.iam_policy_arns.pass_role_to_ecs_task
+    batch_submit_job      = "arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
+    ecs_run_task          = "arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
+    lambda_invoke         = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
+    pass_role_to_ecs_task = "arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
   }
 }

@@ -163,7 +163,7 @@ resource "aws_iam_role_policy_attachment" "cp_scheduler_slack_metrics" {
   for_each = var.cp_scheduler_slack_metrics_policy_attachments
 
   policy_arn = each.value
-  role       = aws_iam_role.cp_scheduler_slack_metrics.name
+  role       = "cp-scheduler-slack-metrics-${var.env}"
 }
 
 # policies
