@@ -75,6 +75,7 @@ module "aws_iam_role" {
   cp_slack_metrics_client_policy_attachments    = local.cp_slack_metrics_client_policy_attachments
   cp_scheduler_slack_metrics_policy_attachments = local.cp_scheduler_slack_metrics_policy_attachments
   cp_scheduler_cost_cutter_policy_attachments   = local.cp_scheduler_cost_cutter_policy_attachments
+  administrator_policy_attachments              = local.administrator_policy_attachments
   env                                           = local.env
 }
 
@@ -173,13 +174,15 @@ module "aws_iam_role" {
 
 # administrator
 import {
-  to = aws_iam_role.administrator
+  to = module.aws_iam_role.aws_iam_role.administrator
   id = "administrator-${local.env}"
 }
 
 import {
-  to = aws_iam_role_policy_attachment.administrator
-  id = "administrator-${local.env}/arn:aws:iam::aws:policy/AdministratorAccess"
+  for_each = local.administrator_policy_attachments
+
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.administrator[each.key]
+  id = "administrator-${local.env}/${each.value}"
 }
 
 # # policies

@@ -35,6 +35,7 @@ locals {
     ssm_core       = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
     s3             = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
     cloudwatch     = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+    administrator  = "arn:aws:iam::aws:policy/AdministratorAccess"
   }
   ssm_core_policy_attachments = {
     ssm_core = local.iam_policy_arns.ssm_core
@@ -65,5 +66,8 @@ locals {
     rds_start_stop = "arn:aws:iam::${local.account_id}:policy/rds-start-stop-${local.env}"
     ec2_start_stop = "arn:aws:iam::${local.account_id}:policy/ec2-start-stop-${local.env}"
     ecs_write      = "arn:aws:iam::${local.account_id}:policy/ecs-write-${local.env}"
+  }
+  administrator_policy_attachments = {
+    administrator = local.iam_policy_arns.administrator
   }
 }

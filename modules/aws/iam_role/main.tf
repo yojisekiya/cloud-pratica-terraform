@@ -189,6 +189,29 @@ resource "aws_iam_role_policy_attachment" "cp_scheduler_cost_cutter" {
   role       = "cp-scheduler-cost-cutter-${var.env}"
 }
 
+# administrator
+resource "aws_iam_role" "administrator" {
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        AWS = "arn:aws:iam::043309350350:root"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+  max_session_duration = 3600
+  name                 = "administrator-${var.env}"
+}
+
+resource "aws_iam_role_policy_attachment" "administrator" {
+  for_each = var.administrator_policy_attachments
+
+  policy_arn = each.value
+  role       = "administrator-${var.env}"
+}
+
 # policies
 resource "aws_iam_policy" "sqs_read_write" {
   name = "sqs-read-write-${var.env}"
