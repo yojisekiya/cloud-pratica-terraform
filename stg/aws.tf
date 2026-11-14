@@ -146,28 +146,15 @@ module "aws_iam_role" {
 
 # scheduler slack metrics
 import {
-  to = aws_iam_role.cp_scheduler_slack_metrics
+  to = module.aws_iam_role.aws_iam_role.cp_scheduler_slack_metrics
   id = "cp-scheduler-slack-metrics-${local.env}"
 }
 
 import {
-  to = aws_iam_role_policy_attachment.batch_submit_job
-  id = "cp-scheduler-slack-metrics-${local.env}/arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
-}
+  for_each = local.cp_scheduler_slack_metrics_policy_attachments
 
-import {
-  to = aws_iam_role_policy_attachment.ecs_run_task
-  id = "cp-scheduler-slack-metrics-${local.env}/arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
-}
-
-import {
-  to = aws_iam_role_policy_attachment.lambda_invoke
-  id = "cp-scheduler-slack-metrics-${local.env}/arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
-}
-
-import {
-  to = aws_iam_role_policy_attachment.pass_role_to_ecs_task
-  id = "cp-scheduler-slack-metrics-${local.env}/arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_scheduler_slack_metrics[each.key]
+  id = "cp-scheduler-slack-metrics-${local.env}/${each.value}"
 }
 
 # # policies
@@ -197,21 +184,21 @@ import {
 # }
 
 import {
-  to = aws_iam_policy.ecs_run_task
+  to = module.aws_iam_role.aws_iam_policy.ecs_run_task
   id = "arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
 }
 
 import {
-  to = aws_iam_policy.pass_role_to_ecs_task
+  to = module.aws_iam_role.aws_iam_policy.pass_role_to_ecs_task
   id = "arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
 }
 
 import {
-  to = aws_iam_policy.batch_submit_job
+  to = module.aws_iam_role.aws_iam_policy.batch_submit_job
   id = "arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
 }
 
 import {
-  to = aws_iam_policy.lambda_invoke
+  to = module.aws_iam_role.aws_iam_policy.lambda_invoke
   id = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
 }
