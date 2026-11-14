@@ -166,6 +166,29 @@ resource "aws_iam_role_policy_attachment" "cp_scheduler_slack_metrics" {
   role       = "cp-scheduler-slack-metrics-${var.env}"
 }
 
+# cp scheduler cost cutter
+resource "aws_iam_role" "cp_scheduler_cost_cutter" {
+  assume_role_policy = jsonencode({
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Principal = {
+        Service = "scheduler.amazonaws.com"
+      }
+    }]
+    Version = "2012-10-17"
+  })
+  max_session_duration = 3600
+  name                 = "cp-scheduler-cost-cutter-${var.env}"
+}
+
+resource "aws_iam_role_policy_attachment" "cp_scheduler_cost_cutter" {
+  for_each = var.cp_scheduler_cost_cutter_policy_attachments
+
+  policy_arn = each.value
+  role       = "cp-scheduler-cost-cutter-${var.env}"
+}
+
 # policies
 resource "aws_iam_policy" "sqs_read_write" {
   name = "sqs-read-write-${var.env}"
@@ -273,6 +296,42 @@ resource "aws_iam_policy" "pass_role_to_ecs_task" {
           "iam:PassedToService" = "ecs-tasks.amazonaws.com"
         }
       }
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "rds_start_stop" {
+  name = "rds-start-stop-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = ["rds:StartDBInstance", "rds:StopDBInstance"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "ecs_write" {
+  name = "ecs-write-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = ["ecs:UpdateService", "ecs:RunTask"]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+    Version = "2012-10-17"
+  })
+}
+
+resource "aws_iam_policy" "ec2_start_stop" {
+  name = "ec2-start-stop-${var.env}"
+  policy = jsonencode({
+    Statement = [{
+      Action   = ["ec2:StartInstances", "ec2:StopInstances"]
       Effect   = "Allow"
       Resource = "*"
     }]
