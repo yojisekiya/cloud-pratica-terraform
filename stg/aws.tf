@@ -160,7 +160,7 @@ module "aws_iam_role" {
 
 # scheduler cost cutter
 import {
-  to = aws_iam_role.cp_scheduler_cost_cutter
+  to = module.aws_iam_role.aws_iam_role.cp_scheduler_cost_cutter
   id = "cp-scheduler-cost-cutter-${local.env}"
 }
 
@@ -218,16 +218,16 @@ import {
 # }
 
 import {
-  to = aws_iam_policy.rds_start_stop
+  to = module.aws_iam_role.aws_iam_policy.rds_start_stop
   id = "arn:aws:iam::${local.account_id}:policy/rds-start-stop-${local.env}"
 }
 
 import {
-  to = aws_iam_policy.ec2_start_stop
+  to = module.aws_iam_role.aws_iam_policy.ec2_start_stop
   id = "arn:aws:iam::${local.account_id}:policy/ec2-start-stop-${local.env}"
 }
 
 import {
-  to = aws_iam_policy.ecs_write
+  to = module.aws_iam_role.aws_iam_policy.ecs_write
   id = "arn:aws:iam::${local.account_id}:policy/ecs-write-${local.env}"
 }
