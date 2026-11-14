@@ -145,16 +145,37 @@ module "aws_iam_role" {
 # }
 
 # scheduler slack metrics
+# import {
+#   to = module.aws_iam_role.aws_iam_role.cp_scheduler_slack_metrics
+#   id = "cp-scheduler-slack-metrics-${local.env}"
+# }
+
+# import {
+#   for_each = local.cp_scheduler_slack_metrics_policy_attachments
+
+#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_scheduler_slack_metrics[each.key]
+#   id = "cp-scheduler-slack-metrics-${local.env}/${each.value}"
+# }
+
+# scheduler cost cutter
 import {
-  to = module.aws_iam_role.aws_iam_role.cp_scheduler_slack_metrics
-  id = "cp-scheduler-slack-metrics-${local.env}"
+  to = aws_iam_role.cp_scheduler_cost_cutter
+  id = "cp-scheduler-cost-cutter-${local.env}"
 }
 
 import {
-  for_each = local.cp_scheduler_slack_metrics_policy_attachments
+  to = aws_iam_role_policy_attachment.cp_scheduler_cost_cutter_rds_start_stop
+  id = "cp-scheduler-cost-cutter-${local.env}/arn:aws:iam::${local.account_id}:policy/rds-start-stop-${local.env}"
+}
 
-  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_scheduler_slack_metrics[each.key]
-  id = "cp-scheduler-slack-metrics-${local.env}/${each.value}"
+import {
+  to = aws_iam_role_policy_attachment.cp_scheduler_cost_cutter_ec2_start_stop
+  id = "cp-scheduler-cost-cutter-${local.env}/arn:aws:iam::${local.account_id}:policy/ec2-start-stop-${local.env}"
+}
+
+import {
+  to = aws_iam_role_policy_attachment.cp_scheduler_cost_cutter_ecs_write
+  id = "cp-scheduler-cost-cutter-${local.env}/arn:aws:iam::${local.account_id}:policy/ecs-write-${local.env}"
 }
 
 # # policies
@@ -183,22 +204,37 @@ import {
 #   id = "arn:aws:iam::${local.account_id}:policy/cloud-watch-logs-write-${local.env}"
 # }
 
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.ecs_run_task
+#   id = "arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
+# }
+
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.pass_role_to_ecs_task
+#   id = "arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
+# }
+
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.batch_submit_job
+#   id = "arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
+# }
+
+# import {
+#   to = module.aws_iam_role.aws_iam_policy.lambda_invoke
+#   id = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
+# }
+
 import {
-  to = module.aws_iam_role.aws_iam_policy.ecs_run_task
-  id = "arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
+  to = aws_iam_policy.rds_start_stop
+  id = "arn:aws:iam::${local.account_id}:policy/rds-start-stop-${local.env}"
 }
 
 import {
-  to = module.aws_iam_role.aws_iam_policy.pass_role_to_ecs_task
-  id = "arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
+  to = aws_iam_policy.ec2_start_stop
+  id = "arn:aws:iam::${local.account_id}:policy/ec2-start-stop-${local.env}"
 }
 
 import {
-  to = module.aws_iam_role.aws_iam_policy.batch_submit_job
-  id = "arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
-}
-
-import {
-  to = module.aws_iam_role.aws_iam_policy.lambda_invoke
-  id = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
+  to = aws_iam_policy.ecs_write
+  id = "arn:aws:iam::${local.account_id}:policy/ecs-write-${local.env}"
 }
