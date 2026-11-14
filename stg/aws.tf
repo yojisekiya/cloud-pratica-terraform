@@ -81,13 +81,19 @@ module "aws_iam_role" {
   env                                           = local.env
 }
 
+# ec2
+module "aws_ec2" {
+  source = "../modules/aws/ec2"
+  env    = local.env
+}
+
 ## imports
 import {
-  to = aws_instance.nat_1a
+  to = module.aws_ec2.aws_instance.nat_1a
   id = "i-0775417918d163357"
 }
 
 import {
-  to = aws_instance.bastion
+  to = module.aws_ec2.aws_instance.bastion
   id = "i-0cc527f04c2a6486b"
 }
