@@ -1,3 +1,5 @@
+## modules
+
 # vpc
 module "aws_vpc" {
   source = "../modules/aws/vpc"
@@ -66,7 +68,7 @@ module "aws_ses" {
   env            = local.env
 }
 
-## iam role
+# iam role
 module "aws_iam_role" {
   source                                        = "../modules/aws/iam_role"
   ssm_core_policy_attachments                   = local.ssm_core_policy_attachments
@@ -79,98 +81,100 @@ module "aws_iam_role" {
   env                                           = local.env
 }
 
-# # db migrator
-# import {
-#   to = module.aws_iam_role.aws_iam_role.cp_db_migrator
-#   id = "cp-db-migrator-${local.env}"
-# }
+## imports
 
-# # bastion
-# import {
-#   to = module.aws_iam_role.aws_iam_role.cp_bastion
-#   id = "cp-bastion-${local.env}"
-# }
+# db migrator
+import {
+  to = module.aws_iam_role.aws_iam_role.cp_db_migrator
+  id = "cp-db-migrator-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_bastion["ssm_core"]
-#   id = "cp-bastion-${local.env}/${local.ssm_core_policy_attachments["ssm_core"]}"
-# }
+# bastion
+import {
+  to = module.aws_iam_role.aws_iam_role.cp_bastion
+  id = "cp-bastion-${local.env}"
+}
 
-# # nat
-# import {
-#   to = module.aws_iam_role.aws_iam_role.cp_nat
-#   id = "cp-nat-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_bastion["ssm_core"]
+  id = "cp-bastion-${local.env}/${local.ssm_core_policy_attachments["ssm_core"]}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_nat["ssm_core"]
-#   id = "cp-nat-${local.env}/${local.ssm_core_policy_attachments["ssm_core"]}"
-# }
+# nat
+import {
+  to = module.aws_iam_role.aws_iam_role.cp_nat
+  id = "cp-nat-${local.env}"
+}
 
-# # ecs task execution
-# import {
-#   to = module.aws_iam_role.aws_iam_role.ecs_task_execution
-#   id = "ecs-task-execution-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_nat["ssm_core"]
+  id = "cp-nat-${local.env}/${local.ssm_core_policy_attachments["ssm_core"]}"
+}
 
-# import {
-#   for_each = local.ecs_task_execution_policy_attachments
+# ecs task execution
+import {
+  to = module.aws_iam_role.aws_iam_role.ecs_task_execution
+  id = "ecs-task-execution-${local.env}"
+}
 
-#   to = module.aws_iam_role.aws_iam_role_policy_attachment.ecs_task_execution[each.key]
-#   id = "ecs-task-execution-${local.env}/${each.value}"
-# }
+import {
+  for_each = local.ecs_task_execution_policy_attachments
+
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.ecs_task_execution[each.key]
+  id = "ecs-task-execution-${local.env}/${each.value}"
+}
 
 # slack metrics backend
-# import {
-#   to = module.aws_iam_role.aws_iam_role.cp_slack_metrics_backend
-#   id = "cp-slack-metrics-backend-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_role.cp_slack_metrics_backend
+  id = "cp-slack-metrics-backend-${local.env}"
+}
 
-# import {
-#   for_each = local.cp_slack_metrics_backend_policy_attachments
+import {
+  for_each = local.cp_slack_metrics_backend_policy_attachments
 
-#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_slack_metrics_backend[each.key]
-#   id = "cp-slack-metrics-backend-${local.env}/${each.value}"
-# }
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_slack_metrics_backend[each.key]
+  id = "cp-slack-metrics-backend-${local.env}/${each.value}"
+}
 
 # slack metrics client
-# import {
-#   to = module.aws_iam_role.aws_iam_role.cp_slack_metrics_client
-#   id = "cp-slack-metrics-client-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_role.cp_slack_metrics_client
+  id = "cp-slack-metrics-client-${local.env}"
+}
 
-# import {
-#   for_each = local.cp_slack_metrics_client_policy_attachments
+import {
+  for_each = local.cp_slack_metrics_client_policy_attachments
 
-#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_slack_metrics_client[each.key]
-#   id = "cp-slack-metrics-client-${local.env}/${each.value}"
-# }
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_slack_metrics_client[each.key]
+  id = "cp-slack-metrics-client-${local.env}/${each.value}"
+}
 
 # scheduler slack metrics
-# import {
-#   to = module.aws_iam_role.aws_iam_role.cp_scheduler_slack_metrics
-#   id = "cp-scheduler-slack-metrics-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_role.cp_scheduler_slack_metrics
+  id = "cp-scheduler-slack-metrics-${local.env}"
+}
 
-# import {
-#   for_each = local.cp_scheduler_slack_metrics_policy_attachments
+import {
+  for_each = local.cp_scheduler_slack_metrics_policy_attachments
 
-#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_scheduler_slack_metrics[each.key]
-#   id = "cp-scheduler-slack-metrics-${local.env}/${each.value}"
-# }
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_scheduler_slack_metrics[each.key]
+  id = "cp-scheduler-slack-metrics-${local.env}/${each.value}"
+}
 
 # scheduler cost cutter
-# import {
-#   to = module.aws_iam_role.aws_iam_role.cp_scheduler_cost_cutter
-#   id = "cp-scheduler-cost-cutter-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_role.cp_scheduler_cost_cutter
+  id = "cp-scheduler-cost-cutter-${local.env}"
+}
 
-# import {
-#   for_each = local.cp_scheduler_cost_cutter_policy_attachments
+import {
+  for_each = local.cp_scheduler_cost_cutter_policy_attachments
 
-#   to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_scheduler_cost_cutter[each.key]
-#   id = "cp-scheduler-cost-cutter-${local.env}/${each.value}"
-# }
+  to = module.aws_iam_role.aws_iam_role_policy_attachment.cp_scheduler_cost_cutter[each.key]
+  id = "cp-scheduler-cost-cutter-${local.env}/${each.value}"
+}
 
 # administrator
 import {
@@ -186,62 +190,62 @@ import {
 }
 
 # # policies
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.secrets_manager_read
-#   id = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.secrets_manager_read
+  id = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.s3_read
-#   id = "arn:aws:iam::${local.account_id}:policy/s3-read-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.s3_read
+  id = "arn:aws:iam::${local.account_id}:policy/s3-read-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.sqs_read_write
-#   id = "arn:aws:iam::${local.account_id}:policy/sqs-read-write-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.sqs_read_write
+  id = "arn:aws:iam::${local.account_id}:policy/sqs-read-write-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.ses_send_email
-#   id = "arn:aws:iam::${local.account_id}:policy/ses-send-email-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.ses_send_email
+  id = "arn:aws:iam::${local.account_id}:policy/ses-send-email-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.cloud_watch_logs_write
-#   id = "arn:aws:iam::${local.account_id}:policy/cloud-watch-logs-write-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.cloud_watch_logs_write
+  id = "arn:aws:iam::${local.account_id}:policy/cloud-watch-logs-write-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.ecs_run_task
-#   id = "arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.ecs_run_task
+  id = "arn:aws:iam::${local.account_id}:policy/ecs-run-task-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.pass_role_to_ecs_task
-#   id = "arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.pass_role_to_ecs_task
+  id = "arn:aws:iam::${local.account_id}:policy/pass-role-to-ecs-task-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.batch_submit_job
-#   id = "arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.batch_submit_job
+  id = "arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.lambda_invoke
-#   id = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.lambda_invoke
+  id = "arn:aws:iam::${local.account_id}:policy/lambda-invoke-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.rds_start_stop
-#   id = "arn:aws:iam::${local.account_id}:policy/rds-start-stop-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.rds_start_stop
+  id = "arn:aws:iam::${local.account_id}:policy/rds-start-stop-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.ec2_start_stop
-#   id = "arn:aws:iam::${local.account_id}:policy/ec2-start-stop-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.ec2_start_stop
+  id = "arn:aws:iam::${local.account_id}:policy/ec2-start-stop-${local.env}"
+}
 
-# import {
-#   to = module.aws_iam_role.aws_iam_policy.ecs_write
-#   id = "arn:aws:iam::${local.account_id}:policy/ecs-write-${local.env}"
-# }
+import {
+  to = module.aws_iam_role.aws_iam_policy.ecs_write
+  id = "arn:aws:iam::${local.account_id}:policy/ecs-write-${local.env}"
+}
