@@ -44,17 +44,17 @@ locals {
     task_execution = local.iam_policy_arns.task_execution
     s3             = local.iam_policy_arns.s3
     cloudwatch     = local.iam_policy_arns.cloudwatch
-    secret_manager = "arn:aws:iam::${local.account_id}:policy/secret-manager-read-${local.env}"
+    secret_manager = "arn:aws:iam::${local.account_id}:policy/secrets-manager-read-${local.env}"
   }
   cp_slack_metrics_backend_policy_attachments = {
     ssm_core   = local.iam_policy_arns.ssm_core
     cloudwatch = local.iam_policy_arns.cloudwatch
     s3         = "arn:aws:iam::${local.account_id}:policy/s3-read-${local.env}"
-    ses        = "arn:aws:iam::${local.account_id}:policy/ses-${local.env}"
-    sqs        = "arn:aws:iam::${local.account_id}:policy/sqs-${local.env}"
+    ses        = "arn:aws:iam::${local.account_id}:policy/ses-send-email-${local.env}"
+    sqs        = "arn:aws:iam::${local.account_id}:policy/sqs-read-write-${local.env}"
   }
   cp_slack_metrics_client_policy_attachments = {
-    cloud_watch_logs_write = "arn:aws:iam::${local.account_id}:policy/clout-watch-logs-write-${local.env}"
+    cloud_watch_logs_write = "arn:aws:iam::${local.account_id}:policy/cloud-watch-logs-write-${local.env}"
   }
   cp_scheduler_slack_metrics_policy_attachments = {
     batch_submit_job      = "arn:aws:iam::${local.account_id}:policy/batch-submit-job-${local.env}"
