@@ -97,18 +97,11 @@ module "aws_rds" {
 
 ## imports
 import {
-  to = module.aws_rds.aws_db_instance.main
-  id = "cloud-pratica-${local.env}"
+  to = aws_acm_certificate.acm_cloud_pratica_com_ap_northeast_1
+  id = "arn:aws:acm:ap-northeast-1:${local.account_id}:certificate/b972a7c0-9d54-4975-9e73-d0937b70467c"
 }
 
 import {
-  to = module.aws_rds.aws_db_parameter_group.parameter_group
-  id = "cp-db-parameter-group-postgres18-${local.env}"
+  to = aws_acm_certificate.acm_cloud_pratica_com_us_east_1
+  id = "arn:aws:acm:us-east-1:${local.account_id}:certificate/b3cfce13-6ff5-4989-bbcd-c2004ed47907"
 }
-
-import {
-  to = module.aws_rds.aws_db_subnet_group.subnet_group
-  id = "cp-db-subnet-group-${local.env}"
-}
-
-
