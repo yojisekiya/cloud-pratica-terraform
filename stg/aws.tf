@@ -89,11 +89,18 @@ module "aws_ec2" {
 
 ## imports
 import {
-  to = module.aws_ec2.aws_instance.nat_1a
-  id = "i-0775417918d163357"
+  to = aws_db_instance.main
+  id = "cloud-pratica-${local.env}"
 }
 
 import {
-  to = module.aws_ec2.aws_instance.bastion
-  id = "i-0cc527f04c2a6486b"
+  to = aws_db_parameter_group.parameter_group
+  id = "cp-db-parameter-group-postgres18-${local.env}"
 }
+
+import {
+  to = aws_db_subnet_group.subnet_group
+  id = "cp-db-subnet-group-${local.env}"
+}
+
+
