@@ -95,13 +95,27 @@ module "aws_rds" {
   env                = local.env
 }
 
+# acm_cloud_pratica_com_ap_northeast_1
+module "acm_cloud_pratica_com_ap_northeast_1" {
+  source    = "../modules/aws/acm_cloud_pratica_com_ap_northeast_1"
+  base_host = local.base_host
+  env       = local.env
+}
+
+# acm_cloud_pratica_com_us_east_1
+module "acm_cloud_pratica_com_us_east_1" {
+  source    = "../modules/aws/acm_cloud_pratica_com_us_east_1"
+  base_host = local.base_host
+  env       = local.env
+}
+
 ## imports
 import {
-  to = aws_acm_certificate.acm_cloud_pratica_com_ap_northeast_1
+  to = module.acm_cloud_pratica_com_ap_northeast_1.aws_acm_certificate.main
   id = "arn:aws:acm:ap-northeast-1:${local.account_id}:certificate/b972a7c0-9d54-4975-9e73-d0937b70467c"
 }
 
 import {
-  to = aws_acm_certificate.acm_cloud_pratica_com_us_east_1
+  to = module.acm_cloud_pratica_com_us_east_1.aws_acm_certificate.main
   id = "arn:aws:acm:us-east-1:${local.account_id}:certificate/b3cfce13-6ff5-4989-bbcd-c2004ed47907"
 }
