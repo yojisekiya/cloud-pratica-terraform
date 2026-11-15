@@ -87,19 +87,27 @@ module "aws_ec2" {
   env    = local.env
 }
 
+# rds
+module "aws_rds" {
+  source             = "../modules/aws/rds"
+  account_id         = local.account_id
+  private_subnet_ids = local.private_subnet_ids
+  env                = local.env
+}
+
 ## imports
 import {
-  to = aws_db_instance.main
+  to = module.aws_rds.aws_db_instance.main
   id = "cloud-pratica-${local.env}"
 }
 
 import {
-  to = aws_db_parameter_group.parameter_group
+  to = module.aws_rds.aws_db_parameter_group.parameter_group
   id = "cp-db-parameter-group-postgres18-${local.env}"
 }
 
 import {
-  to = aws_db_subnet_group.subnet_group
+  to = module.aws_rds.aws_db_subnet_group.subnet_group
   id = "cp-db-subnet-group-${local.env}"
 }
 
