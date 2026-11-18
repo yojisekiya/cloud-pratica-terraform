@@ -111,11 +111,11 @@ module "acm_cloud_pratica_com_us_east_1" {
 
 ## imports
 import {
-  to = module.acm_cloud_pratica_com_ap_northeast_1.aws_acm_certificate.main
-  id = "arn:aws:acm:ap-northeast-1:${local.account_id}:certificate/b972a7c0-9d54-4975-9e73-d0937b70467c"
+  to = aws_ecs_cluster.cloud_pratica_backend
+  id = "cloud-pratica-backend-${local.env}"
 }
 
 import {
-  to = module.acm_cloud_pratica_com_us_east_1.aws_acm_certificate.main
-  id = "arn:aws:acm:us-east-1:${local.account_id}:certificate/b3cfce13-6ff5-4989-bbcd-c2004ed47907"
+  to = aws_ecs_cluster_capacity_providers.cloud_pratica_backend
+  id = "cloud-pratica-backend-${local.env}"
 }
