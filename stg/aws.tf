@@ -109,13 +109,20 @@ module "acm_cloud_pratica_com_us_east_1" {
   env       = local.env
 }
 
+# ecs
+module "aws_ecs" {
+  source = "../modules/aws/ecs"
+  region = local.region
+  env    = local.env
+}
+
 ## imports
 import {
-  to = aws_ecs_cluster.cloud_pratica_backend
+  to = module.aws_ecs.aws_ecs_cluster.cloud_pratica_backend
   id = "cloud-pratica-backend-${local.env}"
 }
 
 import {
-  to = aws_ecs_cluster_capacity_providers.cloud_pratica_backend
+  to = module.aws_ecs.aws_ecs_cluster_capacity_providers.cloud_pratica_backend
   id = "cloud-pratica-backend-${local.env}"
 }
