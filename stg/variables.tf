@@ -4,6 +4,7 @@ locals {
   region                 = "ap-northeast-1"
   base_host              = local.env == "stg" ? "stg.yojisekiya.com" : "yojisekiya.com"
   slack_metrics_api_host = "sm-api.${local.base_host}"
+  arn_cp_config_bucket   = "$arn:aws:s3:::cp-yoji-config-${local.env}"
   public_subnet_ids = [
     module.aws_subnet.id_public_1a,
     module.aws_subnet.id_public_1c,

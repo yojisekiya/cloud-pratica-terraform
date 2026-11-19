@@ -116,18 +116,57 @@ module "aws_ecs" {
   env    = local.env
 }
 
+# ecs task definitions
+module "aws_ecs_task_definition" {
+  source                               = "../modules/aws/ecs_task_definition"
+  env                                  = local.env
+  ecs_task_execution_role_arn          = module.aws_iam_role.role_arn_ecs_task_execution
+  ecs_task_role_arn_slack_metrics      = module.aws_iam_role.role_arn_cp_slack_metrics_backend
+  ecs_task_role_arn_db_migrator        = module.aws_iam_role.role_arn_cp_db_migrator
+  secrets_manager_arn_db_main_instance = module.aws_secrets_manager.arn_db_main_instance
+  ecr_url_db_migrator                  = "${module.aws_ecr.url_db_migrator}:a8244ba"
+  ecr_url_slack_metrics                = "${module.aws_ecr.url_slack_metrics}:a8244ba"
+  arn_cp_config_bucket                 = local.arn_cp_config_bucket
+  ecs_task_specs = {
+    slack_metrics_api = {
+      cpu    = 256
+      memory = 512
+    }
+    slack_metrics_batch = {
+      cpu    = 256
+      memory = 512
+    }
+    db_migrator = {
+      cpu    = 256
+      memory = 512
+    }
+    practice_ecs_calculate = {
+      cpu    = 256
+      memory = 512
+    }
+    media_compressor_compress_video = {
+      cpu    = 2048
+      memory = 4096
+    }
+    cost_api = {
+      cpu    = 512
+      memory = 1024
+    }
+  }
+}
+
 ## imports
 import {
-  to = aws_ecs_task_definition.db_migrator
+  to = module.aws_ecs_task_definition.aws_ecs_task_definition.db_migrator
   id = "arn:aws:ecs:${local.region}:${local.account_id}:task-definition/db-migrator-${local.env}:5"
 }
 
 import {
-  to = aws_ecs_task_definition.slack_metrics_api
+  to = module.aws_ecs_task_definition.aws_ecs_task_definition.slack_metrics_api
   id = "arn:aws:ecs:${local.region}:${local.account_id}:task-definition/slack-metrics-api-${local.env}:9"
 }
 
 import {
-  to = aws_ecs_task_definition.slack_metrics_batch
+  to = module.aws_ecs_task_definition.aws_ecs_task_definition.slack_metrics_batch
   id = "arn:aws:ecs:${local.region}:${local.account_id}:task-definition/slack-metrics-batch-${local.env}:3"
 }
