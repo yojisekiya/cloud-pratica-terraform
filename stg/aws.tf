@@ -158,16 +158,16 @@ module "aws_ecs_task_definition" {
 
 ## imports
 import {
-  to = aws_appautoscaling_target.slack_metrics_api
+  to = module.aws_ecs.aws_appautoscaling_target.slack_metrics_api
   id = "ecs/service/cloud-pratica-backend-${local.env}/${local.slack_metrics_api.name}/ecs:service:DesiredCount"
 }
 
 import {
-  to = aws_appautoscaling_policy.slack_metrics_api_cpu
+  to = module.aws_ecs.aws_appautoscaling_policy.slack_metrics_api_cpu
   id = "ecs/service/cloud-pratica-backend-${local.env}/${local.slack_metrics_api.name}/ecs:service:DesiredCount/target-tracking-cpu"
 }
 
 import {
-  to = aws_appautoscaling_policy.slack_metrics_api_memory
+  to = module.aws_ecs.aws_appautoscaling_policy.slack_metrics_api_memory
   id = "ecs/service/cloud-pratica-backend-${local.env}/${local.slack_metrics_api.name}/ecs:service:DesiredCount/target-tracking-memory"
 }

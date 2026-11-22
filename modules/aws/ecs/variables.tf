@@ -14,5 +14,6 @@ variable "slack_metrics_api" {
     task_definition    = string
     capacity_provider  = string
     security_group_ids = list(string)
+    service_namespace  = string
   })
 }
