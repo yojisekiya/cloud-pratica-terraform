@@ -4,3 +4,7 @@ output "alb_cidr_ipv4" {
     rule.cidr_ipv4
   ]
 }
+
+output "id_slack_metrics_backend" {
+  value = aws_security_group.slack_metrics_backend.id
+}
