@@ -71,4 +71,12 @@ locals {
   administrator_policy_attachments = {
     administrator = local.iam_policy_arns.administrator
   }
+  slack_metrics_api = {
+    name               = "slack-metrics-api-${local.env}"
+    target_group_arn   = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:targetgroup/slack-metrics-api-${local.env}/f6c44e40b672957d"
+    subnet_ids         = local.private_subnet_ids
+    task_definition    = module.aws_ecs_task_definition.arn_slack_metrics_api
+    capacity_provider  = "FARGATE_SPOT"
+    security_group_ids = [module.aws_security_group.id_slack_metrics_backend]
+  }
 }

@@ -111,17 +111,10 @@ module "acm_cloud_pratica_com_us_east_1" {
 
 # ecs
 module "aws_ecs" {
-  source = "../modules/aws/ecs"
-  region = local.region
-  slack_metrics_api = {
-    name               = "slack-metrics-api-${local.env}"
-    target_group_arn   = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:targetgroup/slack-metrics-api-${local.env}/f6c44e40b672957d"
-    subnet_ids         = local.private_subnet_ids
-    task_definition    = module.aws_ecs_task_definition.arn_slack_metrics_api
-    capacity_provider  = "FARGATE_SPOT"
-    security_group_ids = [module.aws_security_group.id_slack_metrics_backend]
-  }
-  env = local.env
+  source            = "../modules/aws/ecs"
+  region            = local.region
+  slack_metrics_api = local.slack_metrics_api
+  env               = local.env
 }
 
 # ecs task definitions
