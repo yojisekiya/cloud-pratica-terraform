@@ -158,16 +158,36 @@ module "aws_ecs_task_definition" {
 
 ## imports
 import {
-  to = module.aws_ecs.aws_appautoscaling_target.slack_metrics_api
-  id = "ecs/service/cloud-pratica-backend-${local.env}/${local.slack_metrics_api.name}/ecs:service:DesiredCount"
+  to = aws_scheduler_schedule_group.slack_metrics
+  id = "slack-metrics-${local.env}"
 }
 
 import {
-  to = module.aws_ecs.aws_appautoscaling_policy.slack_metrics_api_cpu
-  id = "ecs/service/cloud-pratica-backend-${local.env}/${local.slack_metrics_api.name}/ecs:service:DesiredCount/target-tracking-cpu"
+  to = aws_scheduler_schedule.sync_workspace
+  id = "slack-metrics-${local.env}/sync-workspaces-${local.env}"
 }
 
 import {
-  to = module.aws_ecs.aws_appautoscaling_policy.slack_metrics_api_memory
-  id = "ecs/service/cloud-pratica-backend-${local.env}/${local.slack_metrics_api.name}/ecs:service:DesiredCount/target-tracking-memory"
+  to = aws_scheduler_schedule_group.cost_cutter
+  id = "cost-cutter-${local.env}"
+}
+
+import {
+  to = aws_scheduler_schedule.start_db_instance_cp
+  id = "cost-cutter-${local.env}/start-db-instance-cp-${local.env}"
+}
+
+import {
+  to = aws_scheduler_schedule.stop_db_instance_cp
+  id = "cost-cutter-${local.env}/stop-db-instance-cp-${local.env}"
+}
+
+import {
+  to = aws_scheduler_schedule.stop_ec2_instances
+  id = "cost-cutter-${local.env}/stop-ec2-instances-${local.env}"
+}
+
+import {
+  to = aws_scheduler_schedule.scale_in_ecs_service_slack_metrics_api
+  id = "cost-cutter-${local.env}/scale-in-ecs-service-slack-metrics-api-${local.env}"
 }
