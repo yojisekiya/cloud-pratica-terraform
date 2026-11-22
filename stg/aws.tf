@@ -157,16 +157,6 @@ module "aws_ecs_task_definition" {
 
 ## imports
 import {
-  to = module.aws_ecs_task_definition.aws_ecs_task_definition.db_migrator
-  id = "arn:aws:ecs:${local.region}:${local.account_id}:task-definition/db-migrator-${local.env}:5"
-}
-
-import {
-  to = module.aws_ecs_task_definition.aws_ecs_task_definition.slack_metrics_api
-  id = "arn:aws:ecs:${local.region}:${local.account_id}:task-definition/slack-metrics-api-${local.env}:9"
-}
-
-import {
-  to = module.aws_ecs_task_definition.aws_ecs_task_definition.slack_metrics_batch
-  id = "arn:aws:ecs:${local.region}:${local.account_id}:task-definition/slack-metrics-batch-${local.env}:3"
+  to = aws_ecs_service.slack_metrics_api
+  id = "cloud-pratica-backend-${local.env}/slack-metrics-api-${local.env}"
 }
