@@ -78,5 +78,6 @@ locals {
     task_definition    = module.aws_ecs_task_definition.arn_slack_metrics_api
     capacity_provider  = "FARGATE_SPOT"
     security_group_ids = [module.aws_security_group.id_slack_metrics_backend]
+    service_namespace  = "ecs"
   }
 }
