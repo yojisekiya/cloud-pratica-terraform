@@ -179,8 +179,16 @@ module "aws_event_bridge_scheduler" {
   env = local.env
 }
 
+# target group
+module "aws_target_group" {
+  source = "../modules/aws/target_group"
+  region = local.region
+  vpc_id = module.aws_vpc.id_cloud_pratica
+  env    = local.env
+}
+
 ## imports
 import {
-  to = aws_lb_target_group.slack_metrics_api
-  id = "arn:aws:elasticloadbalancing:ap-northeast-1:742248953342:targetgroup/slack-metrics-api-stg/f6c44e40b672957d"
+  to = module.aws_target_group.aws_lb_target_group.slack_metrics_api
+  id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:targetgroup/slack-metrics-api-${local.env}/f6c44e40b672957d"
 }
