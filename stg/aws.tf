@@ -181,36 +181,6 @@ module "aws_event_bridge_scheduler" {
 
 ## imports
 import {
-  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule_group.slack_metrics
-  id = "slack-metrics-${local.env}"
-}
-
-import {
-  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule.sync_workspaces
-  id = "slack-metrics-${local.env}/sync-workspaces-${local.env}"
-}
-
-import {
-  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule_group.cost_cutter
-  id = "cost-cutter-${local.env}"
-}
-
-import {
-  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule.start_db_instance_cp
-  id = "cost-cutter-${local.env}/start-db-instance-cp-${local.env}"
-}
-
-import {
-  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule.stop_db_instance_cp
-  id = "cost-cutter-${local.env}/stop-db-instance-cp-${local.env}"
-}
-
-import {
-  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule.stop_ec2_instances
-  id = "cost-cutter-${local.env}/stop-ec2-instances-${local.env}"
-}
-
-import {
-  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule.scale_in_ecs_service_slack_metrics_api
-  id = "cost-cutter-${local.env}/scale-in-ecs-service-slack-metrics-api-${local.env}"
+  to = aws_lb_target_group.slack_metrics_api
+  id = "arn:aws:elasticloadbalancing:ap-northeast-1:742248953342:targetgroup/slack-metrics-api-stg/f6c44e40b672957d"
 }
