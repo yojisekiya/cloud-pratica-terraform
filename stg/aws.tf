@@ -156,38 +156,61 @@ module "aws_ecs_task_definition" {
   }
 }
 
+# event bridge scheduler
+module "aws_event_bridge_scheduler" {
+  source             = "../modules/aws/event_bridge_scheduler"
+  region             = local.region
+  private_subnet_ids = local.private_subnet_ids
+  slack_metrics = {
+    iam_role_arn                             = module.aws_iam_role.role_arn_cp_scheduler_slack_metrics
+    ecs_cluster_arn                          = module.aws_ecs.ecs_cluster_arn_cloud_pratica_backend
+    ecs_task_definition_arn_without_revision = module.aws_ecs_task_definition.arn_without_revision_slack_metrics_batch
+    security_group_id                        = module.aws_security_group.id_slack_metrics_backend
+  }
+  cost_cutter = {
+    enable       = true
+    iam_role_arn = module.aws_iam_role.role_arn_cp_scheduler_cost_cutter
+    ec2_instance_ids = [
+      module.aws_ec2.id_nat_1a,
+      module.aws_ec2.id_bastion,
+    ]
+    ecs_cluster_arn_cloud_pratica_backend = module.aws_ecs.ecs_cluster_arn_cloud_pratica_backend
+  }
+  env = local.env
+}
+
 ## imports
 import {
-  to = aws_scheduler_schedule_group.slack_metrics
+  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule_group.slack_metrics
   id = "slack-metrics-${local.env}"
 }
 
 import {
-  to = aws_scheduler_schedule.sync_workspace
+  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule.sync_workspaces
   id = "slack-metrics-${local.env}/sync-workspaces-${local.env}"
 }
 
 import {
-  to = aws_scheduler_schedule_group.cost_cutter
+  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule_group.cost_cutter
   id = "cost-cutter-${local.env}"
 }
 
 import {
-  to = aws_scheduler_schedule.start_db_instance_cp
+  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule.start_db_instance_cp
   id = "cost-cutter-${local.env}/start-db-instance-cp-${local.env}"
 }
 
 import {
-  to = aws_scheduler_schedule.stop_db_instance_cp
+  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule.stop_db_instance_cp
   id = "cost-cutter-${local.env}/stop-db-instance-cp-${local.env}"
 }
 
 import {
-  to = aws_scheduler_schedule.stop_ec2_instances
+  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule.stop_ec2_instances
   id = "cost-cutter-${local.env}/stop-ec2-instances-${local.env}"
 }
 
 import {
-  to = aws_scheduler_schedule.scale_in_ecs_service_slack_metrics_api
+  to = module.aws_event_bridge_scheduler.aws_scheduler_schedule.scale_in_ecs_service_slack_metrics_api
   id = "cost-cutter-${local.env}/scale-in-ecs-service-slack-metrics-api-${local.env}"
 }
