@@ -187,18 +187,32 @@ module "aws_target_group" {
   env    = local.env
 }
 
+# load balancer
+module "aws_alb" {
+  source = "../modules/aws/alb"
+  region = local.region
+  cloud_pratica = {
+    security_group_ids                 = [module.aws_security_group.id_alb_cp]
+    subnet_ids                         = local.public_subnet_ids
+    certificate_arn                    = "arn:aws:acm:${local.region}:${local.account_id}:certificate/b972a7c0-9d54-4975-9e73-d0937b70467c"
+    target_group_arn_slack_metrics_api = module.aws_target_group.arn_slack_metrics_api
+    slack_metrics_api_host             = local.slack_metrics_api_host
+  }
+  env = local.env
+}
+
 ## imports
 import {
-  to = aws_lb.cloud_pratica
+  to = module.aws_alb.aws_lb.cloud_pratica
   id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:loadbalancer/app/cp-alb-${local.env}/d61a5431192babad"
 }
 
 import {
-  to = aws_lb_listener.cp_https
+  to = module.aws_alb.aws_lb_listener.cp_https
   id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:listener/app/cp-alb-${local.env}/d61a5431192babad/9354bff99ca90ed3"
 }
 
 import {
-  to = aws_lb_listener_rule.slack_metrics_api
+  to = module.aws_alb.aws_lb_listener_rule.slack_metrics_api
   id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:listener-rule/app/cp-alb-${local.env}/d61a5431192babad/9354bff99ca90ed3/bad97b4e5a3d8a59"
 }
