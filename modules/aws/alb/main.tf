@@ -49,9 +49,8 @@ resource "aws_lb_listener_rule" "slack_metrics_api" {
     Name = "slack-metrics-api"
   }
   action {
-    order            = 1
-    target_group_arn = var.cloud_pratica.target_group_arn_slack_metrics_api
-    type             = "forward"
+    order = 1
+    type  = "forward"
     forward {
       stickiness {
         enabled  = false
