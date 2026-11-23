@@ -189,6 +189,16 @@ module "aws_target_group" {
 
 ## imports
 import {
-  to = module.aws_target_group.aws_lb_target_group.slack_metrics_api
-  id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:targetgroup/slack-metrics-api-${local.env}/f6c44e40b672957d"
+  to = aws_lb.cloud_pratica
+  id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:loadbalancer/app/cp-alb-${local.env}/d61a5431192babad"
+}
+
+import {
+  to = aws_lb_listener.cp_https
+  id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:listener/app/cp-alb-${local.env}/d61a5431192babad/9354bff99ca90ed3"
+}
+
+import {
+  to = aws_lb_listener_rule.slack_metrics_api
+  id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:listener-rule/app/cp-alb-${local.env}/d61a5431192babad/9354bff99ca90ed3/bad97b4e5a3d8a59"
 }
