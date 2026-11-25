@@ -201,18 +201,50 @@ module "aws_alb" {
   env = local.env
 }
 
+# s3
+module "aws_s3" {
+  source                      = "../modules/aws/s3"
+  cloudfront_distribution_arn = "arn:aws:cloudfront::${local.account_id}:distribution/E1EMXRQLV0TYZ0"
+  env                         = local.env
+}
+
 ## imports
 import {
-  to = module.aws_alb.aws_lb.cloud_pratica
-  id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:loadbalancer/app/cp-alb-${local.env}/d61a5431192babad"
+  to = module.aws_s3.module.cp_config.aws_s3_bucket.this[0]
+  id = "cp-yoji-config-${local.env}"
 }
 
 import {
-  to = module.aws_alb.aws_lb_listener.cp_https
-  id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:listener/app/cp-alb-${local.env}/d61a5431192babad/9354bff99ca90ed3"
+  to = module.aws_s3.module.cp_config.aws_s3_bucket_public_access_block.this[0]
+  id = "cp-yoji-config-${local.env}"
 }
 
 import {
-  to = module.aws_alb.aws_lb_listener_rule.slack_metrics_api
-  id = "arn:aws:elasticloadbalancing:${local.region}:${local.account_id}:listener-rule/app/cp-alb-${local.env}/d61a5431192babad/9354bff99ca90ed3/bad97b4e5a3d8a59"
+  to = module.aws_s3.module.cp_config.aws_s3_bucket_server_side_encryption_configuration.this[0]
+  id = "cp-yoji-config-${local.env}"
+}
+
+import {
+  to = module.aws_s3.module.cp_config.aws_s3_bucket_versioning.this[0]
+  id = "cp-yoji-config-${local.env}"
+}
+
+import {
+  to = module.aws_s3.module.slack_metrics.aws_s3_bucket.this[0]
+  id = "cp-slack-metrics-yoji-${local.env}"
+}
+
+import {
+  to = module.aws_s3.module.slack_metrics.aws_s3_bucket_public_access_block.this[0]
+  id = "cp-slack-metrics-yoji-${local.env}"
+}
+
+import {
+  to = module.aws_s3.module.slack_metrics.aws_s3_bucket_server_side_encryption_configuration.this[0]
+  id = "cp-slack-metrics-yoji-${local.env}"
+}
+
+import {
+  to = module.aws_s3.module.slack_metrics.aws_s3_bucket_versioning.this[0]
+  id = "cp-slack-metrics-yoji-${local.env}"
 }
