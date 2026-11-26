@@ -210,41 +210,11 @@ module "aws_s3" {
 
 ## imports
 import {
-  to = module.aws_s3.module.cp_config.aws_s3_bucket.this[0]
-  id = "cp-yoji-config-${local.env}"
+  to = aws_cloudfront_distribution.slack_metrics
+  id = "E1EMXRQLV0TYZ0"
 }
 
 import {
-  to = module.aws_s3.module.cp_config.aws_s3_bucket_public_access_block.this[0]
-  id = "cp-yoji-config-${local.env}"
-}
-
-import {
-  to = module.aws_s3.module.cp_config.aws_s3_bucket_server_side_encryption_configuration.this[0]
-  id = "cp-yoji-config-${local.env}"
-}
-
-import {
-  to = module.aws_s3.module.cp_config.aws_s3_bucket_versioning.this[0]
-  id = "cp-yoji-config-${local.env}"
-}
-
-import {
-  to = module.aws_s3.module.slack_metrics.aws_s3_bucket.this[0]
-  id = "cp-slack-metrics-yoji-${local.env}"
-}
-
-import {
-  to = module.aws_s3.module.slack_metrics.aws_s3_bucket_public_access_block.this[0]
-  id = "cp-slack-metrics-yoji-${local.env}"
-}
-
-import {
-  to = module.aws_s3.module.slack_metrics.aws_s3_bucket_server_side_encryption_configuration.this[0]
-  id = "cp-slack-metrics-yoji-${local.env}"
-}
-
-import {
-  to = module.aws_s3.module.slack_metrics.aws_s3_bucket_versioning.this[0]
-  id = "cp-slack-metrics-yoji-${local.env}"
+  to = aws_cloudfront_origin_access_control.s3_slack_metrics
+  id = "EGQB2P7IXCF2G"
 }
