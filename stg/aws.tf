@@ -208,13 +208,20 @@ module "aws_s3" {
   env                         = local.env
 }
 
+module "aws_cloudfront" {
+  source     = "../modules/aws/cloudfront"
+  base_host  = local.base_host
+  account_id = local.account_id
+  env        = local.env
+}
+
 ## imports
 import {
-  to = aws_cloudfront_distribution.slack_metrics
+  to = module.aws_cloudfront.aws_cloudfront_distribution.slack_metrics
   id = "E1EMXRQLV0TYZ0"
 }
 
 import {
-  to = aws_cloudfront_origin_access_control.s3_slack_metrics
+  to = module.aws_cloudfront.aws_cloudfront_origin_access_control.s3_slack_metrics
   id = "EGQB2P7IXCF2G"
 }
